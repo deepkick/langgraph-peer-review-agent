@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# 仮想環境
+.venv/
+venv/
+env/
+ENV/
+
+# 環境変数 / シークレット
+.env
+.env.local
+
+# 出力ディレクトリ (実行時に results/ が作られる)
+results/
+tmp/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+.claude/
+
+# 開発時のメタファイル
+claude-code-briefing.md
+
+# テスト・型・カバレッジ
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
