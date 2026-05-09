@@ -1065,6 +1065,48 @@ class MultiPathPeerReview:
         )
         return self.graph.invoke(initial)
 
+    def run_streaming(
+        self,
+        query: str,
+        peer_review_enabled: bool = True,
+        recorder=None,  # ReplayRecorder | None
+    ) -> dict:
+        """graph.stream() 経由で実行し、各 node 完了時に recorder にコールバック。
+
+        stream_mode=["updates", "values"] の dual mode を使用する:
+        - "updates": 各 node の delta (recorder が stage 分類に使用)
+        - "values": 完全な state スナップショット (final_state として常に最新で上書き)
+
+        手動 reduce を避けることで、State スキーマ変更時の保守コストを排除し、
+        LangGraph の reducer 挙動を正本として final state を取得する。
+
+        recorder が None の場合は更新通知をスキップする (run() と同等動作)。
+        """
+        initial = MultiPathPeerReviewState(
+            query=query, peer_review_enabled=peer_review_enabled
+        )
+        if recorder is not None:
+            recorder.start()
+
+        final_state: dict | None = None
+        for mode, payload in self.graph.stream(
+            initial, stream_mode=["updates", "values"]
+        ):
+            if mode == "updates":
+                if recorder is not None:
+                    recorder.on_update(payload)
+            elif mode == "values":
+                # values mode は各 step 後に完全な state を emit するので、
+                # 最後に受け取ったものが最終 state になる
+                final_state = payload
+
+        if final_state is None:
+            raise RuntimeError(
+                "graph.stream が values mode を一度も emit しませんでした。"
+                "LangGraph のバージョン互換を確認してください。"
+            )
+        return final_state
+
 
 # ===== CLI エントリポイント =====
 
