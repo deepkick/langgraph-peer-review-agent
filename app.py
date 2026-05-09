@@ -187,5 +187,24 @@ if __name__ == "__main__":
     # theme は Gradio 6.0 で Blocks() → launch() に移動した API
     demo.launch(
         auth=(STUDY_GROUP_USER, STUDY_GROUP_PASSWORD),
-        theme=gr.themes.Soft(),
+        # システムフォント (SF Pro / Segoe UI / Hiragino Sans 等) に
+        # フォールバックさせ、Latin と日本語の混在時の可読性を確保。
+        # Soft theme のデフォルト (Quicksand) は丸みが強く、技術文書の
+        # 可読性に欠けるため明示的に上書きする。
+        # Gradio 6.x は font / font_mono に Font オブジェクトを期待するため
+        # 生 str ではなく gr.themes.Font(name) で wrap する。
+        theme=gr.themes.Soft(
+            font=[
+                gr.themes.Font("ui-sans-serif"),
+                gr.themes.Font("system-ui"),
+                gr.themes.Font("-apple-system"),
+                gr.themes.Font("sans-serif"),
+            ],
+            font_mono=[
+                gr.themes.Font("ui-monospace"),
+                gr.themes.Font("SF Mono"),
+                gr.themes.Font("Consolas"),
+                gr.themes.Font("monospace"),
+            ],
+        ),
     )
