@@ -43,3 +43,9 @@ htmlcov/
 .ipynb_checkpoints/
 
 CLAUDE.md
+
+_briefings/
+
+# Gradio
+.gradio/
+flagged/

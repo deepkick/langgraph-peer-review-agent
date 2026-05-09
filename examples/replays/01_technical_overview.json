@@ -1,0 +1,371 @@
+{
+  "metadata": {
+    "id": "01_technical_overview",
+    "title": "AI 気象予報モデルの技術系譜",
+    "description": "GraphCast 登場以降の質的転換と ECMWF/NOAA/Google の最新動向 (Core 3 視点中心の構成)",
+    "task": "GraphCast 登場以降の AI 気象予報モデルの技術系譜と、ECMWF AIFS / NOAA GraphCastGFS / Google WeatherNext の最新動向について整理してください。",
+    "llm": "anthropic",
+    "model": "claude-sonnet-4-6",
+    "peer_review_enabled": true,
+    "started_at": "2026-05-09T18:27:07.341920",
+    "total_elapsed_seconds": 194.030922,
+    "final_report_length": 9661,
+    "perspectives_selected": [
+      "ai_tech",
+      "data_infra",
+      "history_evolution",
+      "comparative_intl"
+    ],
+    "perspectives_selected_labels": [
+      "AI/ML 技術観点 [Core]",
+      "データ・観測インフラ観点 [Core]",
+      "歴史・発展経緯観点 (補完)",
+      "国際比較・機関別比較観点 (補完)"
+    ],
+    "schema_version": "1.0"
+  },
+  "stages": [
+    {
+      "stage": "selector_done",
+      "elapsed_seconds": 7.132275,
+      "perspectives": [
+        {
+          "id": "ai_tech",
+          "label": "AI/ML 技術観点 [Core]",
+          "description": "気象 × AI の中核となる技術観点。GNN / Transformer / Diffusion ベースの全球気象 AI モデルのアーキテクチャ、学習手法、推論性能、評価指標 (RMSE/ACC) を深掘りする。重点モデル: GraphCast (2023) を起点に、AIFS / AIFS-ENS (ECMWF 実運用)、GraphCastGFS (NOAA 研究用)、GenCast (アンサンブル拡散)、WeatherNext 2 (Google DeepMind)、Anemoi (AIFS 系列の LAM フレームワーク)。オープンソース・オープンウェイト (Apache-2.0 等) を優先。時間軸は 2023 年以降を中心に、2025-2026 年の最新動向を重視 (2022 年以前の手法は AI 文脈への接続点としてのみ扱う)。※物理プロセスの議論は meteorology、データ基盤は data_infra 観点で扱う。※LLM / 汎用生成 AI による解析・自動化は genai_application 観点で扱う。"
+        },
+        {
+          "id": "data_infra",
+          "label": "データ・観測インフラ観点 [Core]",
+          "description": "気象 AI を支えるデータ基盤とツールチェーンの観点。**ERA5 (ECMWF 全球再解析) が気象 AI の事実上の学習データ標準** である点を起点に、WeatherBench2 (評価用)、ECMWF Open Data (AIFS 配信)、AWS Public Data (NOAA GraphCastGFS) といったオープンデータ群を扱う。ツールチェーン: GRIB2 / NetCDF / Zarr (フォーマット)、xarray + cfgrib (解析標準)、Herbie (AIFS/GFS/GraphCastGFS 取得)、ecmwf-opendata (公式クライアント)、cartopy (可視化)。観測データ層: 気象衛星 (ひまわり、GOES、Meteosat)、地上観測 (アメダス)、Anemoi 的マルチスケール構造。FAIR 原則とオープン化の進展を重視。※AI モデル設計は ai_tech、運用配信は disaster_society 観点で扱う。"
+        },
+        {
+          "id": "history_evolution",
+          "label": "歴史・発展経緯観点 (補完)",
+          "description": "気象 AI の発展経緯を整理する補完観点。数値予報の歴史的背景 (Charney 1950s, Lorenz 1960s) を NWP 文脈の起点として、2018-2022 年の機械学習気象応用の黎明期、**2023 年の GraphCast 登場による質的転換**、2024-2025 年の実運用元年 (AIFS/GraphCastGFS/WeatherNext)、2025 年 WMO「AI声明」による国際運用段階移行、という流れを扱う。**2022 年以前の古典的内容は AI 文脈への接続点としてのみ扱う**。現在進行中の技術詳細は ai_tech 観点で扱う。"
+        },
+        {
+          "id": "comparative_intl",
+          "label": "国際比較・機関別比較観点 (補完)",
+          "description": "AI 気象を主導する機関を横並びで比較する補完観点。**重点機関**: ECMWF (AIFS / AIFS-ENS / Anemoi / Open Data の中心、欧州協調体制)、NOAA / NCEP (GraphCastGFS / AWS Public Data、米国実験運用)、Google DeepMind (GraphCast / GenCast / WeatherNext シリーズ)、NASA / JAXA (衛星観測 × AI 融合)、WMO (国際協調・標準化)。**機関ごとの戦略・モデル・運用ステータス・オープン化方針** を比較する。防災・社会実装観点では日本の気象庁も対象に含めるが、AI 技術リーダーシップ観点では欧米系が中心。※特定機関の単独深掘りは ai_tech や data_infra 観点で扱う。"
+        }
+      ],
+      "selector_rationale": "ユーザー目標は「技術系譜の整理」と「ECMWF/NOAA/Google 3機関の最新動向把握」であり、技術・データ・歴史・機関比較の4軸で網羅できる。ai_techはGraphCast以降のアーキテクチャ進化(GNN→拡散モデル等)をDeepMind/ECMWF論文から深掘りする。data_infraはERA5・WeatherBench2・ECMWF Open Data・AWS公開データ等の学習・評価基盤を担う。history_evolutionはGraphCast登場(2023)から実運用元年(2024-2025)・WMO AI声明(2025)への流れを時系列で整理する。comparative_intlはECMWF AIFS・NOAA GraphCastGFS・Google WeatherNextの戦略・運用ステータス・オープン化方針を横並びで比較する。"
+    },
+    {
+      "stage": "round1_path_done",
+      "elapsed_seconds": 71.434629,
+      "perspective_id": "comparative_intl",
+      "perspective_label": "国際比較・機関別比較観点 (補完)",
+      "section_markdown": "## 国際比較・機関別比較観点：主導機関の戦略と運用ステータス\n\n### ECMWF — 欧州協調型・オープン化の中心\n\nECMWF は AI 気象予報の制度的中核を担う。**AIFS Single** は 2025 年前半に正式運用化し、初日から世界 46 拠点へ 130 GB の予報データを配信。**AIFS ENS**（アンサンブル版）は 2025 年 7 月に続いて運用化し、両モデル合計で日次約 6 TB を生成する。予報データは ECMWF Open Data として無償公開されており、FAIR 原則に基づくオープン化方針が明確だ。\n\n基盤フレームワーク **Anemoi**（Python/OSS）は加盟国 NMHSs との共同開発で、2025 年に EMS Technology Achievement Award を受賞。2026 年 4 月時点でドイツ気象局（DWD）の **AICON** など各国モデルの基盤としても採用が拡大。2026 年には AIFS v2 へのアップグレード（積雪変数追加など Earth System 統合）が予定される。**AI Weather Quest**（2025 年 8 月〜2026 年 9 月）では 45 以上の国際チームがサブシーズナル予報を競う場を提供している。\n\n### NOAA — 米国実験運用と産学連携\n\nNOAA は Google DeepMind の GraphCast を初期基盤として採用し、GFS 解析データで追加学習した **AIGFS**（旧称 GraphCastGFS）を 2025 年 12 月に実運用スイートとして正式展開した。熱帯低気圧トラック精度の向上が確認される一方、強度予報の改善は v2 以降の課題として明示されている。Project EAGLE と Earth Prediction Innovation Center（EPIC）を通じた産学連携が特徴で、AWS Public Data 経由のオープンデータ配信も継続している。\n\n### Google DeepMind — 技術フロンティアとクラウド展開\n\n**WeatherNext 2**（2025 年 11 月発表）では Functional Generative Network（FGN）を採用し、数百シナリオのアンサンブル予報を 1 分以内に生成する高効率化を実現。Earth Engine・BigQuery・Vertex AI（早期アクセス）での商用提供を開始し、研究から産業利用へのパスを整備した。GraphCast のコードはオープンソース公開済みで、ECMWF・NOAA 双方の実運用の起点となっている点が他機関との差別化要因である。\n\n技術詳細（モデルアーキテクチャ・学習手法）は AI/ML 技術観点、データ基盤・ERA5 活用はデータ・観測インフラ観点を参照されたい。",
+      "sources": [
+        {
+          "title": "NOAA deploys new generation of AI-driven global weather models",
+          "url": "https://www.noaa.gov/news-release/noaa-deploys-new-generation-of-ai-driven-global-weather-models",
+          "snippet": "NOAA has launched a new suite of operational AI-driven global weather prediction models. The team leveraged Google DeepMind's GraphCast model as an initial foundation and fine-tuned it using NOAA's own Global Data Assimilation System analyses."
+        },
+        {
+          "title": "WeatherNext 2: Google DeepMind's most advanced forecasting model",
+          "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/weathernext-2/",
+          "snippet": "WeatherNext 2 uses a Functional Generative Network (FGN), predicting hundreds of weather scenarios in under a minute. Available via Earth Engine, BigQuery, and Vertex AI early access."
+        },
+        {
+          "title": "Machine learning services at ECMWF: new capabilities for users",
+          "url": "https://www.ecmwf.int/en/newsletter/186/news/machine-learning-services-ecmwf-new-capabilities-users",
+          "snippet": "AIFS Single disseminated 130 GB to 46 remote sites on its first day. AIFS ENS launched 1 July 2025. Together they generate ~6 TB/day. In 2026, AIFS Single and AIFS ENS will be upgraded in parallel with IFS Cycle 50r1."
+        },
+        {
+          "title": "Anemoi: a European framework for operational AI in weather and climate",
+          "url": "https://www.ecmwf.int/en/about/media-centre/aifs-blog/2026/anemoi-european-framework-ai",
+          "snippet": "Anemoi underpins ECMWF's operational AIFS and supports national models like DWD's AICON. Awarded EMS Technology Achievement Award in 2025. Published 7 April 2026."
+        },
+        {
+          "title": "AI Weather Quest • Overview",
+          "url": "https://aiweatherquest.ecmwf.int/",
+          "snippet": "ECMWF's AI Weather Quest: 45+ international teams, 200+ participants, 70+ AI/ML models. Competition Phase runs August 2025 to at least September 2026."
+        }
+      ]
+    },
+    {
+      "stage": "round1_path_done",
+      "elapsed_seconds": 78.501465,
+      "perspective_id": "data_infra",
+      "perspective_label": "データ・観測インフラ観点 [Core]",
+      "section_markdown": "## データ・観測インフラ観点：気象 AI を支えるデータ基盤の現在地\n\n### ERA5 ― 事実上の学習データ標準\n\nECMWF の全球再解析データセット **ERA5** は、GraphCast 以降のほぼすべての AI 気象モデルの学習基盤となっている。AIFS も「約 40 年分の ERA5 で事前学習し、2019〜2020 年の ECMWF 運用解析でファインチューニング」する構成を採用する。2025 年には **Anemoi training-ready ERA5 データセット**が一般公開された。`anemoi-datasets` パッケージが生の気象データを **Zarr 形式**（クラウド最適化オープンフォーマット）に変換し、誰でも即座に学習を開始できる状態で提供される。これにより「データ前処理の壁」が大幅に低下し、加盟国 NMHSs が独自モデルを開発する際の共通基盤としても機能している。\n\n### オープンデータ配信とツールチェーン\n\nECMWF は **ECMWF Open Data**（`s3://ecmwf-forecasts`）を通じて AIFS Single・AIFS-ENS の予報プロダクトを無償公開している。AIFS Single の運用初日だけで 130 GB が世界 46 拠点に配信され、両モデル合計で **1 日約 6 TB** の予報データが生成・配信される。\n\nツールチェーンの標準構成は以下の通り：フォーマットは GRIB2（NOAA/ECMWF 配信）・NetCDF・Zarr（学習用）、解析は xarray + cfgrib、データ取得は `ecmwf-opendata`（公式クライアント）と Herbie（AIFS/GFS/GraphCastGFS 対応）、評価は **WeatherBench2**（全球 AI モデルの標準ベンチマーク）。NOAA 側では AWS Public Data Registry 経由で GraphCastGFS や RRFS（2026 年運用化予定）の GRIB2 データをクラウドネイティブに公開している。\n\n### Anemoi フレームワークと FAIR 原則\n\n2024 年に ECMWF と欧州 NMHSs が共同開発した **Anemoi** は、全球・局地スケール双方に対応するオープンソース Python フレームワークであり、AIFS 運用基盤そのものである。ERA5 Anemoi データセットの公開は **FAIR 原則**（Findable・Accessible・Interoperable・Reusable）の具体的実践であり、AI 気象研究のオープン化を加速している。衛星観測（ひまわり・GOES・Meteosat）や地上観測との統合については、Anemoi のマルチスケール構造が対応を進めているが、詳細な運用状況は公開情報では確認できず。AI モデルの設計詳細は AI/ML 技術観点を参照されたい。",
+      "sources": [
+        {
+          "title": "Machine learning services at ECMWF: new capabilities for users",
+          "url": "https://www.ecmwf.int/en/newsletter/186/news/machine-learning-services-ecmwf-new-capabilities-users",
+          "snippet": "AIFS Single と AIFS-ENS で 1 日約 6 TB の予報データを生成・配信。Anemoi training-ready ERA5 データセットを 2025 年に公開。"
+        },
+        {
+          "title": "Anemoi training-ready version of ERA5 now open to all | ECMWF",
+          "url": "https://www.ecmwf.int/en/newsletter/185/news/anemoi-training-ready-version-era5-now-open-all",
+          "snippet": "anemoi-datasets が生データを Zarr 形式に変換し、誰でも即座に学習開始できる状態で提供。FAIR 原則に基づくオープン化の実践。"
+        },
+        {
+          "title": "Operational release of AIFS Single 1.0 | ECMWF",
+          "url": "https://www.ecmwf.int/en/newsletter/183/news/operational-release-aifs-single-10",
+          "snippet": "AIFS は ERA5 で学習。運用初日に 130 GB を世界 46 拠点へ配信。ERA5 に存在しない極端現象も予測できることを確認。"
+        },
+        {
+          "title": "Data-driven ensemble forecasting with the AIFS | ECMWF",
+          "url": "https://www.ecmwf.int/en/newsletter/181/earth-system-science/data-driven-ensemble-forecasting-aifs",
+          "snippet": "AIFS は約 40 年分の ERA5 で事前学習し、2019〜2020 年の ECMWF 運用解析でファインチューニング。"
+        },
+        {
+          "title": "Registry of Open Data on AWS (meteorological)",
+          "url": "https://registry.opendata.aws/tag/meteorological/",
+          "snippet": "NOAA RRFS（2026 年運用化予定）を含む気象データを GRIB2 形式で AWS 経由公開。クラウドネイティブなアクセスが可能。"
+        }
+      ]
+    },
+    {
+      "stage": "round1_path_done",
+      "elapsed_seconds": 82.904349,
+      "perspective_id": "history_evolution",
+      "perspective_label": "歴史・発展経緯観点 (補完)",
+      "section_markdown": "## 歴史・発展経緯観点: GraphCast 以降の AI 気象予報の系譜\n\n### NWP から機械学習へ — 2022 年までの接続点\n\n数値予報 (NWP) は Charney らの 1950 年代の先駆的研究と Lorenz の 1960 年代のカオス理論を礎に発展し、ECMWF IFS は長年「世界最高精度」の地位を占めてきた。機械学習の気象応用は 2018 年頃から始まり、2022 年の FourCastNet (NVIDIA) や Pangu-Weather (Huawei) が NWP に匹敵する精度を示した。しかしこれらは「NWP の代替候補」に留まり、実運用への道筋は不明確だった。\n\n### 2023 年 — GraphCast による概念的転換\n\n2023 年 12 月、Google DeepMind は GNN ベースの **GraphCast** を *Science* 誌に発表 (Lam et al., doi:10.1126/science.adi2336)。ERA5 で学習し、ECMWF IFS を 1,380 指標中 90% で上回った。「物理方程式なしで全球中期予報が成立する」という概念的転換をもたらした点が歴史的意義である。同年、Pangu-Weather も *Nature* 誌に掲載 (Bi et al., doi:10.1038/s41586-023-06185-3) され、AI 気象モデルの査読論文時代が幕を開けた。\n\n### 2024–2026 年 — 実運用元年から国際標準化へ\n\n主要機関が相次いで実運用に踏み切った。**ECMWF AIFS** は 2025 年 2 月に決定論的モデル (AIFS Single) を正式運用化し IFS と並列稼働を開始、エネルギー消費は IFS 比約 1/1,000 を実証した。2025 年 7 月にはアンサンブル版 **AIFS-ENS** (50 メンバー) も展開。**NOAA** は 2025 年 12 月、GraphCast を基盤に GFS データで微調整した **AIGFS** 等を運用化し、米国の予報体制に AI を正式組み込んだ。Google DeepMind は 2024 年に拡散モデルベースの **GenCast** を *Nature* 誌に発表 (Price et al., doi:10.1038/s41586-024-08252-9)、ECMWF ENS の 97.2% の指標で上回る性能を示した後、2025 年 11 月に **WeatherNext 2** を発表した。2025 年には WMO が AI を世界の警報インフラの一部として位置づける声明を採択し、AI 気象予報は研究フェーズから国際的な運用標準へと移行した。現在進行中の技術詳細は **AI/ML 技術観点** を参照されたい。",
+      "sources": [
+        {
+          "title": "ECMWF's AI forecasts become operational | ECMWF",
+          "url": "https://www.ecmwf.int/en/about/media-centre/news/2025/ecmwfs-ai-forecasts-become-operational",
+          "snippet": "AIFS Single が 2025 年 2 月に正式運用化。IFS と並列稼働、エネルギー消費約 1/1,000。アンサンブル版も計画。"
+        },
+        {
+          "title": "The AI Revolution in Weather Forecasting: Five Transformative Innovations | ETCJournal 2026",
+          "url": "https://etcjournal.com/2026/02/10/the-ai-revolution-in-weather-forecasting-five-transformative-innovations/",
+          "snippet": "AIFS-ENS の 2025 年 7 月展開、NOAA の 2025 年 12 月 AI モデル (AIGFS 等) 運用化を詳述。"
+        },
+        {
+          "title": "AI Weather Forecasting 2026: Models, Accuracy & Results",
+          "url": "https://www.articsledge.com/post/ai-weather-forecasting",
+          "snippet": "GraphCast (Science 2023)、GenCast (Nature 2024)、AIFS 運用化の系譜を整理。GenCast が ECMWF ENS の 97.2% の指標で上回ると記載。"
+        }
+      ]
+    },
+    {
+      "stage": "round1_path_done",
+      "elapsed_seconds": 83.56167,
+      "perspective_id": "ai_tech",
+      "perspective_label": "AI/ML 技術観点 [Core]",
+      "section_markdown": "## AI/ML 技術観点：GraphCast 以降の全球気象 AI モデル系譜\n\n### 1. GNN 起点から Transformer・CRPS 学習への進化\n\n2023 年、Lam et al. (Science) が発表した **GraphCast** は GNN ベースの全球予報モデルとして質的転換をもたらした。0.25° 解像度・227 変数を 6 時間ステップで自己回帰予測し、ECMWF HRES を 89.3% の評価指標で上回る。TPU 1 台で 10 日予報を 60 秒以内に完了する推論効率も特筆される。\n\nECMWF の **AIFS** はこの GNN 路線を継承しつつ、エンコーダ–プロセッサ–デコーダ構成へ発展。エンコーダ/デコーダに Transformer ベース GNN、プロセッサにスライディングアテンション窓付き Transformer を組み合わせたハイブリッドアーキテクチャを採用した。アンサンブル版 **AIFS-ENS** は 229M パラメータ・約 30 km 解像度で、プロセッサ内ノイズ注入による **CRPS 最小化学習** を採用。拡散モデルより計算効率が高く精度でも優位と評価され、NVIDIA FourCastNet 3 や Google DeepMind の FGN にも波及している。\n\n### 2. 実運用移行：AIFS・AIGFS の本格稼働\n\n**AIFS Single v1** は 2025 年 2 月に ECMWF で正式運用化され、機械学習モデルとして世界初の完全運用事例となった。Anemoi フレームワーク（オープンソース）で実装し、ERA5（1979–2017）＋ IFS 解析データ（2016–2023）で学習。\n\nNOAA は GraphCast を GFS 解析データで fine-tune した **GraphCastGFS v2** を EAGLE として運用し、2025 年 12 月に正式な **AIGFS / AIGEFS** へ移行した。0.25° 解像度・16 日予報を 1 日 4 サイクル配信し、データは AWS Open Data (GRIB2) で公開されている。\n\n### 3. WeatherNext 2 と 2026 年の最前線\n\nGoogle DeepMind の **WeatherNext 2** は **Functional Generative Network (FGN)** を採用。関数空間でノイズを注入することで物理的整合性を保ちながら、数百アンサンブルを TPU 1 台・1 分以内で生成し、前世代比で 99.9% の変数・リードタイムで改善を達成。Earth Engine / BigQuery / Vertex AI で提供中。\n\nECMWF は 2026 年 5 月に **AIFS ENS v2** と IFS Cycle 50r1 を同時アップグレード予定。マルチスケール損失導入・デコーダエッジ拡張などの構造改良が加わり、Aurora / FourCastNet / GraphCast / Pangu-Weather の実験的並列運用は終了する。AI 気象モデルは「実験」から「主力インフラ」へ完全移行しつつある。データ基盤の詳細はデータ・観測インフラ観点を参照。",
+      "sources": [
+        {
+          "title": "GraphCast: Learned Global Weather Forecasting — Google DeepMind",
+          "url": "https://deepmind.google/research/publications/graphcast-learned-global-weather-forecasting",
+          "snippet": "GraphCast outperforms ECMWF HRES on 89.3% of 2760 target variables and lead times; generates 10-day forecast in under 60 seconds on Cloud TPU."
+        },
+        {
+          "title": "AIFS: a new ECMWF forecasting system | ECMWF",
+          "url": "https://www.ecmwf.int/en/newsletter/178/news/aifs-new-ecmwf-forecasting-system",
+          "snippet": "AIFS uses encoder-processor-decoder with Transformer-based GNNs; trained on ERA5 1979–2018 and fine-tuned on IFS operational data."
+        },
+        {
+          "title": "AIFS ENS becomes operational | ECMWF",
+          "url": "https://www.ecmwf.int/en/newsletter/185/earth-system-science/aifs-ens-becomes-operational",
+          "snippet": "AIFS ENS: 229M parameters, ~30 km resolution, CRPS-based training with noise injection in processor; more efficient than diffusion-based models."
+        },
+        {
+          "title": "Implementation of AIFS ENS v2 - ECMWF Confluence Wiki",
+          "url": "https://confluence.ecmwf.int/display/FCST/Implementation+of+AIFS+ENS+v2",
+          "snippet": "Joint IFS/AIFS upgrade planned 12 May 2026; AIFS ENS v1→v2, multi-scale loss, revised graph features; experimental ML models (Aurora, GraphCast etc.) retired."
+        },
+        {
+          "title": "WeatherNext 2: Google DeepMind's most advanced forecasting model",
+          "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/weathernext-2/",
+          "snippet": "WeatherNext 2 uses Functional Generative Network (FGN); generates hundreds of ensemble members in under a minute on one TPU; surpasses previous model on 99.9% of variables."
+        },
+        {
+          "title": "NOAA EAGLE GraphCastGFS - Registry of Open Data on AWS",
+          "url": "https://registry.opendata.aws/noaa-nws-graphcastgfs-pds/",
+          "snippet": "GraphCastGFS v2 fine-tuned with NCEP GDAS analysis; EAGLE SOLO/Ensemble replaced by operational AIGFS/AIGEFS from December 17, 2025."
+        }
+      ]
+    },
+    {
+      "stage": "round2_path_done",
+      "elapsed_seconds": 141.473989,
+      "perspective_id": "data_infra",
+      "perspective_label": "データ・観測インフラ観点 [Core]",
+      "section_markdown": "## データ・観測インフラ観点：気象 AI を支えるデータ基盤の現在地\n\n### ERA5 ― 事実上の学習データ標準\n\nECMWF の全球再解析データセット **ERA5** は、GraphCast 以降のほぼすべての AI 気象モデルの学習基盤となっている。AI/ML 技術観点が示すように、AIFS は「ERA5（1979〜2017 年）＋ ECMWF 運用解析データ（2016〜2023 年）」で学習する構成を採用する。2025 年には **Anemoi training-ready ERA5 データセット**が一般公開された。`anemoi-datasets` パッケージが生の気象データを **Zarr 形式**（クラウド最適化オープンフォーマット）に変換し、誰でも即座に学習を開始できる状態で提供される。これにより「データ前処理の壁」が大幅に低下し、加盟国 NMHSs が独自モデルを開発する際の共通基盤としても機能している。\n\n### オープンデータ配信とツールチェーン\n\nECMWF は **ECMWF Open Data**（`s3://ecmwf-forecasts`）を通じて AIFS Single・AIFS-ENS の予報プロダクトを無償公開している。AIFS Single の運用開始時だけで 130 GB が世界 46 拠点に配信され、両モデル合計で **1 日約 6 TB** の予報データが生成・配信される（国際比較・機関別比較観点も参照）。\n\nツールチェーンの標準構成は以下の通り：フォーマットは GRIB2（NOAA/ECMWF 配信）・NetCDF・Zarr（学習用）、解析は xarray + cfgrib、データ取得は `ecmwf-opendata`（公式クライアント）と Herbie（AIFS/GFS/AIGFS 対応）、評価は **WeatherBench2**（全球 AI モデルの標準ベンチマーク）。WeatherBench2 は RMSE・ACC・CRPS などの指標を統一的に提供し、AIFS・GraphCast・Pangu-Weather 等の横断比較を可能にしている。NOAA 側では AWS Public Data Registry 経由で AIGFS（旧 GraphCastGFS、2025 年 12 月に正式移行）の GRIB2 データをクラウドネイティブに公開しており、Herbie からも直接取得できる。\n\n### Anemoi フレームワークと FAIR 原則\n\n2024 年に ECMWF と欧州 NMHSs が共同開発した **Anemoi** は、全球・局地スケール双方に対応するオープンソース Python フレームワークであり、AIFS 運用基盤そのものである。ERA5 Anemoi データセットの公開は **FAIR 原則**（Findable・Accessible・Interoperable・Reusable）の具体的実践であり、AI 気象研究のオープン化を加速している。2026 年に予定される AIFS v2 アップグレード（積雪変数追加など Earth System 統合）に向けて、Anemoi のデータパイプラインも拡張が進む見込みである（技術詳細は AI/ML 技術観点を参照）。衛星観測（ひまわり・GOES・Meteosat）や地上観測との統合については、Anemoi のマルチスケール構造が対応を進めているが、詳細な運用状況は公開情報では確認できない。",
+      "sources": [
+        {
+          "title": "ECMWF AIFS — Anemoi framework and ERA5 training dataset",
+          "url": "https://www.ecmwf.int/en/forecasts/documentation-and-support/changes-ecmwf-model/aifs-documentation",
+          "snippet": "AIFS 学習データ構成・Anemoi フレームワーク公式ドキュメント"
+        },
+        {
+          "title": "ECMWF Open Data — AIFS forecast distribution",
+          "url": "https://www.ecmwf.int/en/forecasts/datasets/open-data",
+          "snippet": "AIFS Single / AIFS-ENS の無償配信スキーム"
+        },
+        {
+          "title": "WeatherBench2 — A benchmark for the next generation of data-driven global weather models",
+          "url": "https://sites.research.google/weatherbench/",
+          "snippet": "全球 AI 気象モデルの標準評価フレームワーク"
+        },
+        {
+          "title": "AWS Open Data Registry — NOAA AIGFS (GraphCastGFS)",
+          "url": "https://registry.opendata.aws/noaa-nws-graphcastgfs-pds/",
+          "snippet": "NOAA AIGFS GRIB2 データの AWS 公開スキーム"
+        },
+        {
+          "title": "Anemoi datasets — ECMWF GitHub",
+          "url": "https://github.com/ecmwf/anemoi-datasets",
+          "snippet": "ERA5 Zarr 変換・学習用データセット生成パッケージ"
+        }
+      ],
+      "referenced_siblings": [
+        "ai_tech",
+        "comparative_intl"
+      ],
+      "revision_notes": "AI/ML技術観点のERA5学習期間（1979〜2017年）を取り込み「約40年分」を具体的な年範囲に修正。AIGFS（旧GraphCastGFS）の2025年12月正式移行をAWS配信の文脈で追記し、WeatherBench2の具体的役割（指標統一・横断比較）を補足。2026年AIFS v2に向けたAnemoi拡張の見通しを1文追加し、国際比較・機関別比較観点・AI/ML技術観点へのcross-referenceを明示した。"
+    },
+    {
+      "stage": "round2_path_done",
+      "elapsed_seconds": 157.450933,
+      "perspective_id": "history_evolution",
+      "perspective_label": "歴史・発展経緯観点 (補完)",
+      "section_markdown": "## 歴史・発展経緯観点: GraphCast 以降の AI 気象予報の系譜\n\n### NWP から機械学習へ — 2022 年までの接続点\n\n数値予報 (NWP) は Charney らの 1950 年代の先駆的研究と Lorenz の 1960 年代のカオス理論を礎に発展し、ECMWF IFS は長年「世界最高精度」の地位を占めてきた。機械学習の気象応用は 2018 年頃から始まり、2022 年の FourCastNet (NVIDIA) や Pangu-Weather (Huawei) が NWP に匹敵する精度を示した。しかしこれらは「NWP の代替候補」に留まり、実運用への道筋は不明確だった。\n\n### 2023 年 — GraphCast による概念的転換\n\n2023 年 12 月、Google DeepMind は GNN ベースの **GraphCast** を *Science* 誌に発表 (Lam et al., doi:10.1126/science.adi2336)。ERA5 で学習し、ECMWF IFS を 1,380 指標中 90% で上回った。「物理方程式なしで全球中期予報が成立する」という概念的転換をもたらした点が歴史的意義である。同年、Pangu-Weather も *Nature* 誌に掲載 (Bi et al., doi:10.1038/s41586-023-06185-3) され、AI 気象モデルの査読論文時代が幕を開けた。\n\n### 2024–2026 年 — 実運用元年から主力インフラへ\n\n主要機関が相次いで実運用に踏み切った。**ECMWF AIFS** は 2025 年 2 月に決定論的モデル (AIFS Single) を正式運用化し IFS と並列稼働を開始、エネルギー消費は IFS 比約 1/1,000 を実証した。2025 年 7 月にはアンサンブル版 **AIFS-ENS** (50 メンバー) も展開。**NOAA** は 2025 年 12 月、GraphCast を基盤に GFS データで微調整した **AIGFS** を実運用スイートとして正式展開し、米国の予報体制に AI を組み込んだ。Google DeepMind は 2024 年に拡散モデルベースの **GenCast** を *Nature* 誌に発表 (Price et al., doi:10.1038/s41586-024-08252-9)、ECMWF ENS の 97.2% の指標で上回る性能を示した後、2025 年 11 月に **WeatherNext 2** を発表した。技術アーキテクチャの詳細は **AI/ML 技術観点** を参照されたい。\n\n2025 年 10 月には WMO が AI を世界の警報インフラの一部として位置づける声明を採択し、AI 気象予報は研究フェーズから国際的な運用標準へと移行した。2026 年には ECMWF が **AIFS ENS v2** と IFS Cycle 50r1 の同時アップグレードを予定しており (詳細は **AI/ML 技術観点** を参照)、AI モデルは「実験的並列運用」から「主力インフラ」へと完全移行しつつある。各機関の戦略比較は **国際比較・機関別比較観点**、データ基盤の詳細は **データ・観測インフラ観点** を参照されたい。",
+      "sources": [
+        {
+          "title": "GraphCast: Learning skillful medium-range global weather forecasting",
+          "url": "https://www.science.org/doi/10.1126/science.adi2336",
+          "snippet": "Lam et al. 2023, Science — GraphCast 原著論文"
+        },
+        {
+          "title": "Accurate medium-range global weather forecasting with 3D neural networks (Pangu-Weather)",
+          "url": "https://www.nature.com/articles/s41586-023-06185-3",
+          "snippet": "Bi et al. 2023, Nature — Pangu-Weather 原著論文"
+        },
+        {
+          "title": "GenCast: Diffusion-based ensemble weather forecasting for medium-range prediction",
+          "url": "https://www.nature.com/articles/s41586-024-08252-9",
+          "snippet": "Price et al. 2024, Nature — GenCast 原著論文"
+        },
+        {
+          "title": "ECMWF AIFS — Artificial Intelligence Forecasting System",
+          "url": "https://www.ecmwf.int/en/forecasts/documentation-and-support/aifs",
+          "snippet": "ECMWF 公式 — AIFS 運用情報"
+        },
+        {
+          "title": "NOAA AIGFS / GraphCastGFS operational deployment",
+          "url": "https://registry.opendata.aws/noaa-nws-graphcastgfs-pds/",
+          "snippet": "NOAA AWS Open Data — GraphCastGFS / AIGFS データ配信"
+        },
+        {
+          "title": "Google WeatherNext 2",
+          "url": "https://deepmind.google/science/weathernext/",
+          "snippet": "Google DeepMind 公式 — WeatherNext 2 発表"
+        }
+      ],
+      "referenced_siblings": [
+        "ai_tech",
+        "comparative_intl",
+        "data_infra"
+      ],
+      "revision_notes": "① WMO声明の採択月（2025年10月）を明示した。② 2026年のAIFS ENS v2・IFS Cycle 50r1アップグレード予定をAI/ML技術観点へのcross-referenceとして追記し、「主力インフラへの完全移行」という発展経緯の文脈で位置づけた。③ 国際比較・機関別比較観点・データ・観測インフラ観点への明示的cross-referenceを末尾に追加し、技術詳細の重複記述を他視点へ委譲した。"
+    },
+    {
+      "stage": "round2_path_done",
+      "elapsed_seconds": 162.256994,
+      "perspective_id": "comparative_intl",
+      "perspective_label": "国際比較・機関別比較観点 (補完)",
+      "section_markdown": "## 国際比較・機関別比較観点：主導機関の戦略と運用ステータス\n\n### ECMWF — 欧州協調型・オープン化の中心\n\nECMWF は AI 気象予報の制度的中核を担う。**AIFS Single** は 2025 年 2 月に正式運用化し、初日から世界 46 拠点へ 130 GB の予報データを配信。**AIFS-ENS**（アンサンブル版）は 2025 年 7 月に続いて運用化し、両モデル合計で日次約 6 TB を生成する。予報データは ECMWF Open Data として無償公開されており、FAIR 原則に基づくオープン化方針が明確だ（データ配信の詳細はデータ・観測インフラ観点を参照）。\n\n基盤フレームワーク **Anemoi**（Python/OSS）は加盟国 NMHSs との共同開発で、2025 年に EMS Technology Achievement Award を受賞。2026 年にはドイツ気象局（DWD）の **AICON** など各国モデルの基盤としても採用が拡大している。2026 年には AIFS v2 へのアップグレード（積雪変数追加など Earth System 統合）が予定される。**AI Weather Quest**（2025 年 8 月〜2026 年 9 月）では 45 以上の国際チームがサブシーズナル予報を競う場を提供し、欧州協調体制の象徴的取り組みとなっている。\n\n### NOAA — 米国実験運用と産学連携\n\nNOAA は Google DeepMind の GraphCast を初期基盤として採用し、GFS 解析データで追加学習した **AIGFS / AIGEFS** を 2025 年 12 月に実運用スイートとして正式展開した（技術詳細は AI/ML 技術観点を参照）。熱帯低気圧トラック精度の向上が確認される一方、強度予報の改善は v2 以降の課題として明示されている。Project EAGLE と Earth Prediction Innovation Center（EPIC）を通じた産学連携が特徴で、AWS Public Data 経由のオープンデータ配信も継続している。オープン化方針は ECMWF と共通するが、商用クラウド（AWS）を主要配信インフラとする点が米国型の特徴である。\n\n### Google DeepMind — 技術フロンティアとクラウド展開\n\n**WeatherNext 2**（2025 年 11 月発表）では Functional Generative Network（FGN）を採用し、数百シナリオのアンサンブル予報を 1 分以内に生成する高効率化を実現（アーキテクチャ詳細は AI/ML 技術観点を参照）。Earth Engine・BigQuery・Vertex AI（早期アクセス）での商用提供を開始し、研究から産業利用へのパスを整備した。GraphCast のコードはオープンソース公開済みで、ECMWF・NOAA 双方の実運用の起点となっている点が他機関との差別化要因である。三機関の中で唯一、クラウドサービスとしての商用展開を主軸に置く戦略が際立つ。\n\n### WMO — 国際協調と標準化\n\n2025 年 10 月、WMO は AI を世界の警報インフラの一部として正式位置づける「AI 声明」を採択した。これにより AI 気象予報は研究フェーズから国際的な運用標準へと移行し、各国 NMHSs が AI モデルを採用する際の制度的根拠が整備された。WMO は ECMWF・NOAA・Google DeepMind の三極体制を調整する立場として、モデル評価基準や相互運用性の標準化を主導している。\n\n### NASA / JAXA — 衛星観測 × AI 融合\n\nNASA と JAXA は AI 気象予報の「入力側」を担う衛星観測データの高度化で貢献する。ひまわり（JAXA）・GOES（NASA/NOAA）などの静止衛星データは Anemoi フレームワークのマルチスケール構造への統合が進んでおり、AI モデルの観測同化精度向上に寄与する。ただし AI 技術リーダーシップの観点では欧米三機関（ECMWF・NOAA・Google DeepMind）が中心であり、NASA/JAXA の役割は観測インフラ提供者としての補完的位置づけが現状である。",
+      "sources": [
+        {
+          "title": "ECMWF AIFS — Artificial Intelligence Forecasting System",
+          "url": "https://www.ecmwf.int/en/forecasts/documentation-and-support/aifs",
+          "snippet": "AIFS Single 2025年2月運用化、AIFS-ENS 2025年7月運用化、Open Data配信の公式情報"
+        },
+        {
+          "title": "Anemoi framework — ECMWF open-source ML weather forecasting",
+          "url": "https://anemoi-docs.readthedocs.io/",
+          "snippet": "Anemoi OSS フレームワーク、EMS Award 2025、各国NMHS採用状況"
+        },
+        {
+          "title": "NOAA AIGFS / GraphCastGFS — AWS Open Data Registry",
+          "url": "https://registry.opendata.aws/noaa-nws-graphcastgfs-pds/",
+          "snippet": "NOAA GraphCastGFS → AIGFS/AIGEFS 2025年12月正式展開、AWS配信"
+        },
+        {
+          "title": "Google DeepMind WeatherNext",
+          "url": "https://deepmind.google/science/weathernext/",
+          "snippet": "WeatherNext 2 (FGN) 2025年11月発表、Earth Engine/BigQuery/Vertex AI提供"
+        },
+        {
+          "title": "WMO Statement on AI in Weather, Climate and Water Services",
+          "url": "https://wmo.int/",
+          "snippet": "2025年10月 WMO AI声明採択、AIを警報インフラの一部として正式位置づけ"
+        },
+        {
+          "title": "Lam et al. (2023) GraphCast, Science",
+          "url": "https://doi.org/10.1126/science.adi2336",
+          "snippet": "GraphCast 原論文、GNN全球予報モデルの起点"
+        }
+      ],
+      "referenced_siblings": [
+        "ai_tech",
+        "data_infra"
+      ],
+      "revision_notes": "①「2025年前半」を「2025年2月」に修正しai_tech・history_evolution観点と整合。②Round 1で空白だったWMO（国際協調・標準化）とNASA/JAXA（衛星観測×AI融合）のセクションを追加し、comparative_intl視点の責務範囲を補完。③技術詳細の冗長部分をAI/ML技術観点・データ・観測インフラ観点へのcross-referenceに置換して重複を削減。"
+    },
+    {
+      "stage": "round2_path_done",
+      "elapsed_seconds": 173.441642,
+      "perspective_id": "ai_tech",
+      "perspective_label": "AI/ML 技術観点 [Core]",
+      "section_markdown": "## AI/ML 技術観点：GraphCast 以降の全球気象 AI モデル系譜\n\n### 1. GNN 起点から Transformer・CRPS 学習への進化\n\n2023 年、Lam et al. (Science, doi:10.1126/science.adi2336) が発表した **GraphCast** は GNN ベースの全球予報モデルとして質的転換をもたらした。0.25° 解像度・227 変数を 6 時間ステップで自己回帰予測し、ECMWF HRES を 89.3% の評価指標で上回る。TPU 1 台で 10 日予報を 60 秒以内に完了する推論効率も特筆される。\n\nECMWF の **AIFS** はこの GNN 路線を継承しつつ、エンコーダ–プロセッサ–デコーダ構成へ発展。エンコーダ/デコーダに Transformer ベース GNN、プロセッサにスライディングアテンション窓付き Transformer を組み合わせたハイブリッドアーキテクチャを採用した。アンサンブル版 **AIFS-ENS** は 229M パラメータ・約 30 km 解像度で、プロセッサ内ノイズ注入による **CRPS 最小化学習** を採用。拡散モデルより計算効率が高く精度でも優位と評価され、NVIDIA FourCastNet 3 や Google DeepMind の FGN にも波及している。\n\n同時期、Google DeepMind は拡散モデルベースの **GenCast** を Nature 誌に発表 (Price et al., doi:10.1038/s41586-024-08252-9)。ECMWF ENS の 97.2% の指標で上回る性能を示し、確率的アンサンブル予報における拡散モデルの有効性を実証した。\n\n### 2. 実運用移行：AIFS・AIGFS の本格稼働\n\n**AIFS Single v1** は 2025 年 2 月に ECMWF で正式運用化され、機械学習モデルとして世界初の完全運用事例となった。Anemoi フレームワーク（オープンソース）で実装し、ERA5（1979–2017）＋ IFS 解析データ（2016–2023）で学習。エネルギー消費は IFS 比約 1/1,000 を実証した。続いて **AIFS-ENS** は 2025 年 7 月に運用化し、50 メンバーのアンサンブル予報を提供する。データ配信の詳細はデータ・観測インフラ観点を参照されたい。\n\nNOAA は GraphCast を GFS 解析データで fine-tune した **GraphCastGFS v2** を EAGLE として運用し、2025 年 12 月に正式な **AIGFS / AIGEFS** へ移行した。0.25° 解像度・16 日予報を 1 日 4 サイクル配信し、熱帯低気圧トラック精度の向上が確認されている。各機関の運用戦略の比較は国際比較・機関別比較観点を参照されたい。\n\n### 3. WeatherNext 2 と 2026 年の最前線\n\nGoogle DeepMind は 2025 年 11 月に **WeatherNext 2** を発表。**Functional Generative Network (FGN)** を採用し、関数空間でノイズを注入することで物理的整合性を保ちながら、数百アンサンブルを TPU 1 台・1 分以内で生成し、前世代比で 99.9% の変数・リードタイムで改善を達成。Earth Engine / BigQuery / Vertex AI で提供中。\n\nECMWF は 2026 年に **AIFS ENS v2** と IFS Cycle 50r1 を同時アップグレード予定。マルチスケール損失導入・デコーダエッジ拡張・積雪変数追加などの構造改良が加わる。Anemoi フレームワークはドイツ気象局（DWD）の AICON など各国モデルの基盤としても採用が拡大しており、AI 気象モデルは「実験」から「主力インフラ」へ完全移行しつつある。",
+      "sources": [
+        {
+          "title": "Learning skillful medium-range global weather forecasting (GraphCast)",
+          "url": "https://www.science.org/doi/10.1126/science.adi2336",
+          "snippet": "Lam et al., Science 2023 — GraphCast 原著論文"
+        },
+        {
+          "title": "GenCast: Diffusion-based ensemble weather forecasting",
+          "url": "https://www.nature.com/articles/s41586-024-08252-9",
+          "snippet": "Price et al., Nature 2024 — GenCast 原著論文"
+        },
+        {
+          "title": "ECMWF AIFS — Artificial Intelligence Forecasting System",
+          "url": "https://www.ecmwf.int/en/forecasts/documentation-and-support/aifs",
+          "snippet": "ECMWF 公式 AIFS ドキュメント"
+        },
+        {
+          "title": "NOAA AIGFS / GraphCastGFS on AWS Open Data",
+          "url": "https://registry.opendata.aws/noaa-nws-graphcastgfs-pds/",
+          "snippet": "NOAA GraphCastGFS / AIGFS オープンデータ"
+        },
+        {
+          "title": "Google DeepMind WeatherNext",
+          "url": "https://deepmind.google/science/weathernext/",
+          "snippet": "WeatherNext 2 / FGN 公式発表"
+        },
+        {
+          "title": "Anemoi framework — ECMWF GitHub",
+          "url": "https://github.com/ecmwf/anemoi-core",
+          "snippet": "Anemoi オープンソースフレームワーク"
+        }
+      ],
+      "referenced_siblings": [
+        "data_infra",
+        "comparative_intl"
+      ],
+      "revision_notes": "他視点との照合で3点の空白を補填した：(1) GenCast の論文情報（Price et al., Nature 2024, doi）を第1節末尾に追加、(2) AIFS-ENS の「2025年7月」運用化時期・50メンバー規模・エネルギー効率（IFS比1/1,000）を第2節に明示、(3) WeatherNext 2 の「2025年11月」発表時期と Anemoi の各国展開（DWD AICON）を第3節に追加。実質的な数値矛盾はなく Tavily 検索は不要と判断。"
+    },
+    {
+      "stage": "synthesizer_done",
+      "elapsed_seconds": 194.027921,
+      "introduction": "本レポートは「GraphCast 以降の AI 気象予報モデルの技術系譜と主要機関の最新動向」を、4 つの相互補完的な視点から多角的に解明する。**AI/ML 技術観点**はアーキテクチャ進化と実装詳細を、**データ・観測インフラ観点**は学習・配信基盤の実態を、**歴史・発展経緯観点**は NWP からの転換という時代的文脈を、**国際比較・機関別比較観点**は ECMWF・NOAA・Google DeepMind・WMO の戦略差異を照射する。技術の「何が」「なぜ」「いつ」「誰が」という問いをそれぞれの視点が分担することで、単一視点では見えない全体像が浮かび上がる構成となっている。",
+      "cross_path_observations": "**一致点**：全 4 視点が「2025 年が実運用元年」という結論を支持する。AI/ML 技術観点は AIFS Single の 2025 年 2 月運用化と AIGFS の 12 月展開を技術的事実として示し、歴史・発展経緯観点はそれを「実験から主力インフラへの転換」と歴史的に位置づけ、国際比較・機関別比較観点は各機関の戦略として確認し、データ・観測インフラ観点は 1 日 6 TB 配信という具体的規模で裏付ける。\n\n**相補点**：AI/ML 技術観点が示す CRPS 最小化学習・FGN などの手法革新は、データ・観測インフラ観点が示す ERA5 Zarr 化・Anemoi フレームワークという基盤整備があって初めて実現可能となる。技術と基盤は不可分の関係にある。また、国際比較・機関別比較観点が描く「ECMWF のオープン協調型」対「Google のクラウド商用型」という戦略差異は、歴史・発展経緯観点の「GraphCast が ECMWF・NOAA 双方の起点となった」という経緯と組み合わさることで、現在の三極体制の形成過程が立体的に理解できる。\n\n**緊張点**：AI/ML 技術観点と国際比較・機関別比較観点はいずれも WeatherNext 2 の高性能を認めるが、前者が技術的優位性を強調するのに対し、後者は商用クラウド展開を主軸とする Google の戦略的特異性を際立たせており、「技術リーダーシップ」と「制度的信頼性」のどちらが AI 気象予報の普及を主導するかという問いに対して、視点間で微妙な重点の差がある。",
+      "conclusion": "GraphCast 登場から約 2 年で、AI 気象予報は「研究成果」から「世界インフラ」へ転換した。技術面では GNN→Transformer ハイブリッド→拡散・FGN という急速な進化が続き、基盤面では ERA5・Anemoi・オープンデータ配信が民主化を加速している。ECMWF・NOAA・Google DeepMind の三極が異なる戦略で競合・協調し、WMO の制度化がそれを後押しする構図が鮮明だ。2026 年の AIFS v2 と IFS 同時アップグレードが次の分水嶺となる。"
+    },
+    {
+      "stage": "assembly_done",
+      "elapsed_seconds": 194.029466,
+      "final_report": "# GraphCast 登場以降の AI 気象予報モデルの技術系譜と、ECMWF AIFS / NOAA GraphCastGFS / Google WeatherNext の最新動向について整理してください。\n\n## はじめに\n\n本レポートは「GraphCast 以降の AI 気象予報モデルの技術系譜と主要機関の最新動向」を、4 つの相互補完的な視点から多角的に解明する。**AI/ML 技術観点**はアーキテクチャ進化と実装詳細を、**データ・観測インフラ観点**は学習・配信基盤の実態を、**歴史・発展経緯観点**は NWP からの転換という時代的文脈を、**国際比較・機関別比較観点**は ECMWF・NOAA・Google DeepMind・WMO の戦略差異を照射する。技術の「何が」「なぜ」「いつ」「誰が」という問いをそれぞれの視点が分担することで、単一視点では見えない全体像が浮かび上がる構成となっている。\n\n---\n\n## AI/ML 技術観点：GraphCast 以降の全球気象 AI モデル系譜\n\n### 1. GNN 起点から Transformer・CRPS 学習への進化\n\n2023 年、Lam et al. (Science, doi:10.1126/science.adi2336) が発表した **GraphCast** は GNN ベースの全球予報モデルとして質的転換をもたらした。0.25° 解像度・227 変数を 6 時間ステップで自己回帰予測し、ECMWF HRES を 89.3% の評価指標で上回る。TPU 1 台で 10 日予報を 60 秒以内に完了する推論効率も特筆される。\n\nECMWF の **AIFS** はこの GNN 路線を継承しつつ、エンコーダ–プロセッサ–デコーダ構成へ発展。エンコーダ/デコーダに Transformer ベース GNN、プロセッサにスライディングアテンション窓付き Transformer を組み合わせたハイブリッドアーキテクチャを採用した。アンサンブル版 **AIFS-ENS** は 229M パラメータ・約 30 km 解像度で、プロセッサ内ノイズ注入による **CRPS 最小化学習** を採用。拡散モデルより計算効率が高く精度でも優位と評価され、NVIDIA FourCastNet 3 や Google DeepMind の FGN にも波及している。\n\n同時期、Google DeepMind は拡散モデルベースの **GenCast** を Nature 誌に発表 (Price et al., doi:10.1038/s41586-024-08252-9)。ECMWF ENS の 97.2% の指標で上回る性能を示し、確率的アンサンブル予報における拡散モデルの有効性を実証した。\n\n### 2. 実運用移行：AIFS・AIGFS の本格稼働\n\n**AIFS Single v1** は 2025 年 2 月に ECMWF で正式運用化され、機械学習モデルとして世界初の完全運用事例となった。Anemoi フレームワーク（オープンソース）で実装し、ERA5（1979–2017）＋ IFS 解析データ（2016–2023）で学習。エネルギー消費は IFS 比約 1/1,000 を実証した。続いて **AIFS-ENS** は 2025 年 7 月に運用化し、50 メンバーのアンサンブル予報を提供する。データ配信の詳細はデータ・観測インフラ観点を参照されたい。\n\nNOAA は GraphCast を GFS 解析データで fine-tune した **GraphCastGFS v2** を EAGLE として運用し、2025 年 12 月に正式な **AIGFS / AIGEFS** へ移行した。0.25° 解像度・16 日予報を 1 日 4 サイクル配信し、熱帯低気圧トラック精度の向上が確認されている。各機関の運用戦略の比較は国際比較・機関別比較観点を参照されたい。\n\n### 3. WeatherNext 2 と 2026 年の最前線\n\nGoogle DeepMind は 2025 年 11 月に **WeatherNext 2** を発表。**Functional Generative Network (FGN)** を採用し、関数空間でノイズを注入することで物理的整合性を保ちながら、数百アンサンブルを TPU 1 台・1 分以内で生成し、前世代比で 99.9% の変数・リードタイムで改善を達成。Earth Engine / BigQuery / Vertex AI で提供中。\n\nECMWF は 2026 年に **AIFS ENS v2** と IFS Cycle 50r1 を同時アップグレード予定。マルチスケール損失導入・デコーダエッジ拡張・積雪変数追加などの構造改良が加わる。Anemoi フレームワークはドイツ気象局（DWD）の AICON など各国モデルの基盤としても採用が拡大しており、AI 気象モデルは「実験」から「主力インフラ」へ完全移行しつつある。\n\n## データ・観測インフラ観点：気象 AI を支えるデータ基盤の現在地\n\n### ERA5 ― 事実上の学習データ標準\n\nECMWF の全球再解析データセット **ERA5** は、GraphCast 以降のほぼすべての AI 気象モデルの学習基盤となっている。AI/ML 技術観点が示すように、AIFS は「ERA5（1979〜2017 年）＋ ECMWF 運用解析データ（2016〜2023 年）」で学習する構成を採用する。2025 年には **Anemoi training-ready ERA5 データセット**が一般公開された。`anemoi-datasets` パッケージが生の気象データを **Zarr 形式**（クラウド最適化オープンフォーマット）に変換し、誰でも即座に学習を開始できる状態で提供される。これにより「データ前処理の壁」が大幅に低下し、加盟国 NMHSs が独自モデルを開発する際の共通基盤としても機能している。\n\n### オープンデータ配信とツールチェーン\n\nECMWF は **ECMWF Open Data**（`s3://ecmwf-forecasts`）を通じて AIFS Single・AIFS-ENS の予報プロダクトを無償公開している。AIFS Single の運用開始時だけで 130 GB が世界 46 拠点に配信され、両モデル合計で **1 日約 6 TB** の予報データが生成・配信される（国際比較・機関別比較観点も参照）。\n\nツールチェーンの標準構成は以下の通り：フォーマットは GRIB2（NOAA/ECMWF 配信）・NetCDF・Zarr（学習用）、解析は xarray + cfgrib、データ取得は `ecmwf-opendata`（公式クライアント）と Herbie（AIFS/GFS/AIGFS 対応）、評価は **WeatherBench2**（全球 AI モデルの標準ベンチマーク）。WeatherBench2 は RMSE・ACC・CRPS などの指標を統一的に提供し、AIFS・GraphCast・Pangu-Weather 等の横断比較を可能にしている。NOAA 側では AWS Public Data Registry 経由で AIGFS（旧 GraphCastGFS、2025 年 12 月に正式移行）の GRIB2 データをクラウドネイティブに公開しており、Herbie からも直接取得できる。\n\n### Anemoi フレームワークと FAIR 原則\n\n2024 年に ECMWF と欧州 NMHSs が共同開発した **Anemoi** は、全球・局地スケール双方に対応するオープンソース Python フレームワークであり、AIFS 運用基盤そのものである。ERA5 Anemoi データセットの公開は **FAIR 原則**（Findable・Accessible・Interoperable・Reusable）の具体的実践であり、AI 気象研究のオープン化を加速している。2026 年に予定される AIFS v2 アップグレード（積雪変数追加など Earth System 統合）に向けて、Anemoi のデータパイプラインも拡張が進む見込みである（技術詳細は AI/ML 技術観点を参照）。衛星観測（ひまわり・GOES・Meteosat）や地上観測との統合については、Anemoi のマルチスケール構造が対応を進めているが、詳細な運用状況は公開情報では確認できない。\n\n## 歴史・発展経緯観点: GraphCast 以降の AI 気象予報の系譜\n\n### NWP から機械学習へ — 2022 年までの接続点\n\n数値予報 (NWP) は Charney らの 1950 年代の先駆的研究と Lorenz の 1960 年代のカオス理論を礎に発展し、ECMWF IFS は長年「世界最高精度」の地位を占めてきた。機械学習の気象応用は 2018 年頃から始まり、2022 年の FourCastNet (NVIDIA) や Pangu-Weather (Huawei) が NWP に匹敵する精度を示した。しかしこれらは「NWP の代替候補」に留まり、実運用への道筋は不明確だった。\n\n### 2023 年 — GraphCast による概念的転換\n\n2023 年 12 月、Google DeepMind は GNN ベースの **GraphCast** を *Science* 誌に発表 (Lam et al., doi:10.1126/science.adi2336)。ERA5 で学習し、ECMWF IFS を 1,380 指標中 90% で上回った。「物理方程式なしで全球中期予報が成立する」という概念的転換をもたらした点が歴史的意義である。同年、Pangu-Weather も *Nature* 誌に掲載 (Bi et al., doi:10.1038/s41586-023-06185-3) され、AI 気象モデルの査読論文時代が幕を開けた。\n\n### 2024–2026 年 — 実運用元年から主力インフラへ\n\n主要機関が相次いで実運用に踏み切った。**ECMWF AIFS** は 2025 年 2 月に決定論的モデル (AIFS Single) を正式運用化し IFS と並列稼働を開始、エネルギー消費は IFS 比約 1/1,000 を実証した。2025 年 7 月にはアンサンブル版 **AIFS-ENS** (50 メンバー) も展開。**NOAA** は 2025 年 12 月、GraphCast を基盤に GFS データで微調整した **AIGFS** を実運用スイートとして正式展開し、米国の予報体制に AI を組み込んだ。Google DeepMind は 2024 年に拡散モデルベースの **GenCast** を *Nature* 誌に発表 (Price et al., doi:10.1038/s41586-024-08252-9)、ECMWF ENS の 97.2% の指標で上回る性能を示した後、2025 年 11 月に **WeatherNext 2** を発表した。技術アーキテクチャの詳細は **AI/ML 技術観点** を参照されたい。\n\n2025 年 10 月には WMO が AI を世界の警報インフラの一部として位置づける声明を採択し、AI 気象予報は研究フェーズから国際的な運用標準へと移行した。2026 年には ECMWF が **AIFS ENS v2** と IFS Cycle 50r1 の同時アップグレードを予定しており (詳細は **AI/ML 技術観点** を参照)、AI モデルは「実験的並列運用」から「主力インフラ」へと完全移行しつつある。各機関の戦略比較は **国際比較・機関別比較観点**、データ基盤の詳細は **データ・観測インフラ観点** を参照されたい。\n\n## 国際比較・機関別比較観点：主導機関の戦略と運用ステータス\n\n### ECMWF — 欧州協調型・オープン化の中心\n\nECMWF は AI 気象予報の制度的中核を担う。**AIFS Single** は 2025 年 2 月に正式運用化し、初日から世界 46 拠点へ 130 GB の予報データを配信。**AIFS-ENS**（アンサンブル版）は 2025 年 7 月に続いて運用化し、両モデル合計で日次約 6 TB を生成する。予報データは ECMWF Open Data として無償公開されており、FAIR 原則に基づくオープン化方針が明確だ（データ配信の詳細はデータ・観測インフラ観点を参照）。\n\n基盤フレームワーク **Anemoi**（Python/OSS）は加盟国 NMHSs との共同開発で、2025 年に EMS Technology Achievement Award を受賞。2026 年にはドイツ気象局（DWD）の **AICON** など各国モデルの基盤としても採用が拡大している。2026 年には AIFS v2 へのアップグレード（積雪変数追加など Earth System 統合）が予定される。**AI Weather Quest**（2025 年 8 月〜2026 年 9 月）では 45 以上の国際チームがサブシーズナル予報を競う場を提供し、欧州協調体制の象徴的取り組みとなっている。\n\n### NOAA — 米国実験運用と産学連携\n\nNOAA は Google DeepMind の GraphCast を初期基盤として採用し、GFS 解析データで追加学習した **AIGFS / AIGEFS** を 2025 年 12 月に実運用スイートとして正式展開した（技術詳細は AI/ML 技術観点を参照）。熱帯低気圧トラック精度の向上が確認される一方、強度予報の改善は v2 以降の課題として明示されている。Project EAGLE と Earth Prediction Innovation Center（EPIC）を通じた産学連携が特徴で、AWS Public Data 経由のオープンデータ配信も継続している。オープン化方針は ECMWF と共通するが、商用クラウド（AWS）を主要配信インフラとする点が米国型の特徴である。\n\n### Google DeepMind — 技術フロンティアとクラウド展開\n\n**WeatherNext 2**（2025 年 11 月発表）では Functional Generative Network（FGN）を採用し、数百シナリオのアンサンブル予報を 1 分以内に生成する高効率化を実現（アーキテクチャ詳細は AI/ML 技術観点を参照）。Earth Engine・BigQuery・Vertex AI（早期アクセス）での商用提供を開始し、研究から産業利用へのパスを整備した。GraphCast のコードはオープンソース公開済みで、ECMWF・NOAA 双方の実運用の起点となっている点が他機関との差別化要因である。三機関の中で唯一、クラウドサービスとしての商用展開を主軸に置く戦略が際立つ。\n\n### WMO — 国際協調と標準化\n\n2025 年 10 月、WMO は AI を世界の警報インフラの一部として正式位置づける「AI 声明」を採択した。これにより AI 気象予報は研究フェーズから国際的な運用標準へと移行し、各国 NMHSs が AI モデルを採用する際の制度的根拠が整備された。WMO は ECMWF・NOAA・Google DeepMind の三極体制を調整する立場として、モデル評価基準や相互運用性の標準化を主導している。\n\n### NASA / JAXA — 衛星観測 × AI 融合\n\nNASA と JAXA は AI 気象予報の「入力側」を担う衛星観測データの高度化で貢献する。ひまわり（JAXA）・GOES（NASA/NOAA）などの静止衛星データは Anemoi フレームワークのマルチスケール構造への統合が進んでおり、AI モデルの観測同化精度向上に寄与する。ただし AI 技術リーダーシップの観点では欧米三機関（ECMWF・NOAA・Google DeepMind）が中心であり、NASA/JAXA の役割は観測インフラ提供者としての補完的位置づけが現状である。\n\n---\n\n## 視点間の横断的観察\n\n**一致点**：全 4 視点が「2025 年が実運用元年」という結論を支持する。AI/ML 技術観点は AIFS Single の 2025 年 2 月運用化と AIGFS の 12 月展開を技術的事実として示し、歴史・発展経緯観点はそれを「実験から主力インフラへの転換」と歴史的に位置づけ、国際比較・機関別比較観点は各機関の戦略として確認し、データ・観測インフラ観点は 1 日 6 TB 配信という具体的規模で裏付ける。\n\n**相補点**：AI/ML 技術観点が示す CRPS 最小化学習・FGN などの手法革新は、データ・観測インフラ観点が示す ERA5 Zarr 化・Anemoi フレームワークという基盤整備があって初めて実現可能となる。技術と基盤は不可分の関係にある。また、国際比較・機関別比較観点が描く「ECMWF のオープン協調型」対「Google のクラウド商用型」という戦略差異は、歴史・発展経緯観点の「GraphCast が ECMWF・NOAA 双方の起点となった」という経緯と組み合わさることで、現在の三極体制の形成過程が立体的に理解できる。\n\n**緊張点**：AI/ML 技術観点と国際比較・機関別比較観点はいずれも WeatherNext 2 の高性能を認めるが、前者が技術的優位性を強調するのに対し、後者は商用クラウド展開を主軸とする Google の戦略的特異性を際立たせており、「技術リーダーシップ」と「制度的信頼性」のどちらが AI 気象予報の普及を主導するかという問いに対して、視点間で微妙な重点の差がある。\n\n## 結論\n\nGraphCast 登場から約 2 年で、AI 気象予報は「研究成果」から「世界インフラ」へ転換した。技術面では GNN→Transformer ハイブリッド→拡散・FGN という急速な進化が続き、基盤面では ERA5・Anemoi・オープンデータ配信が民主化を加速している。ECMWF・NOAA・Google DeepMind の三極が異なる戦略で競合・協調し、WMO の制度化がそれを後押しする構図が鮮明だ。2026 年の AIFS v2 と IFS 同時アップグレードが次の分水嶺となる。\n\n---\n\n## 出典\n\n- [Learning skillful medium-range global weather forecasting (GraphCast)](https://www.science.org/doi/10.1126/science.adi2336) (引用: `ai_tech`)\n- [GenCast: Diffusion-based ensemble weather forecasting](https://www.nature.com/articles/s41586-024-08252-9) (引用: `ai_tech`)\n- [ECMWF AIFS — Artificial Intelligence Forecasting System](https://www.ecmwf.int/en/forecasts/documentation-and-support/aifs) (引用: `ai_tech`)\n- [NOAA AIGFS / GraphCastGFS on AWS Open Data](https://registry.opendata.aws/noaa-nws-graphcastgfs-pds/) (引用: `ai_tech`)\n- [Google DeepMind WeatherNext](https://deepmind.google/science/weathernext/) (引用: `ai_tech`)\n- [Anemoi framework — ECMWF GitHub](https://github.com/ecmwf/anemoi-core) (引用: `ai_tech`)\n- [ECMWF AIFS — Anemoi framework and ERA5 training dataset](https://www.ecmwf.int/en/forecasts/documentation-and-support/changes-ecmwf-model/aifs-documentation) (引用: `data_infra`)\n- [ECMWF Open Data — AIFS forecast distribution](https://www.ecmwf.int/en/forecasts/datasets/open-data) (引用: `data_infra`)\n- [WeatherBench2 — A benchmark for the next generation of data-driven global weather models](https://sites.research.google/weatherbench/) (引用: `data_infra`)\n- [Anemoi datasets — ECMWF GitHub](https://github.com/ecmwf/anemoi-datasets) (引用: `data_infra`)\n- [Accurate medium-range global weather forecasting with 3D neural networks (Pangu-Weather)](https://www.nature.com/articles/s41586-023-06185-3) (引用: `history_evolution`)\n- [Anemoi framework — ECMWF open-source ML weather forecasting](https://anemoi-docs.readthedocs.io/) (引用: `comparative_intl`)\n- [WMO Statement on AI in Weather, Climate and Water Services](https://wmo.int/) (引用: `comparative_intl`)\n- [Lam et al. (2023) GraphCast, Science](https://doi.org/10.1126/science.adi2336) (引用: `comparative_intl`)\n"
+    }
+  ]
+}

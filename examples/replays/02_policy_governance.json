@@ -1,0 +1,319 @@
+{
+  "metadata": {
+    "id": "02_policy_governance",
+    "title": "WMO AI 声明と気象 AI のガバナンス",
+    "description": "各国機関の対応・倫理論点・制度的課題 (補完視点中心の構成)",
+    "task": "WMO が 2025 年 10 月に採択した AI 声明を起点に、AI 気象予報の社会実装を巡る政策・倫理・国際比較の論点を整理してください。各国気象機関のオープンデータ方針、Google WeatherNext の輸出規制 (Restricted Country リスト) や Apache-2.0 ライセンスの意義、グローバルサウスへの恩恵格差、誤予測時の責任帰属、国際比較における日本の現状と課題について多角的に扱ってください。",
+    "llm": "anthropic",
+    "model": "claude-sonnet-4-6",
+    "peer_review_enabled": true,
+    "started_at": "2026-05-09T18:39:18.647591",
+    "total_elapsed_seconds": 199.805848,
+    "final_report_length": 9175,
+    "perspectives_selected": [
+      "policy_ethics",
+      "comparative_intl",
+      "disaster_society",
+      "data_infra"
+    ],
+    "perspectives_selected_labels": [
+      "政策・倫理・ガバナンス観点 (補完)",
+      "国際比較・機関別比較観点 (補完)",
+      "防災・社会実装観点 (補完)",
+      "データ・観測インフラ観点 [Core]"
+    ],
+    "schema_version": "1.0"
+  },
+  "stages": [
+    {
+      "stage": "selector_done",
+      "elapsed_seconds": 6.27678,
+      "perspectives": [
+        {
+          "id": "policy_ethics",
+          "label": "政策・倫理・ガバナンス観点 (補完)",
+          "description": "気象 AI の社会的・制度的論点を扱う補完観点。「誰がルールを作り、誰が恩恵を受け、誰が責任を持つか」の視点。WMO 2025 年 10 月「AI声明」(World Meteorological Congress endorses AI for forecasts and warnings) を起点に、以下の 3 軸を扱う: (1) **制度・標準化**: 各国気象機関のオープンデータ方針、ライセンス体系 (Apache-2.0 / Open Data / FAIR 原則)、輸出規制 (例: Google WeatherNext の Restricted Country リスト、日本も含まれる)、官民学連携、(2) **倫理・公平性**: グローバルサウス / 島嶼国への AI 恩恵格差、学習データの地域偏り (ERA5 の偏在)、Early Warnings for All、(3) **責任・透明性**: 誤予測時の責任帰属 (ECMWF・NOAA・気象庁・民間気象会社)、ブラックボックス問題、説明可能性、説明責任。日本では気象業務法による気象庁特別扱いが AI オープン化の論点 (理解可能だが周回遅れ要因にもなっている)。"
+        },
+        {
+          "id": "comparative_intl",
+          "label": "国際比較・機関別比較観点 (補完)",
+          "description": "AI 気象を主導する機関を横並びで比較する補完観点。**重点機関**: ECMWF (AIFS / AIFS-ENS / Anemoi / Open Data の中心、欧州協調体制)、NOAA / NCEP (GraphCastGFS / AWS Public Data、米国実験運用)、Google DeepMind (GraphCast / GenCast / WeatherNext シリーズ)、NASA / JAXA (衛星観測 × AI 融合)、WMO (国際協調・標準化)。**機関ごとの戦略・モデル・運用ステータス・オープン化方針** を比較する。防災・社会実装観点では日本の気象庁も対象に含めるが、AI 技術リーダーシップ観点では欧米系が中心。※特定機関の単独深掘りは ai_tech や data_infra 観点で扱う。"
+        },
+        {
+          "id": "disaster_society",
+          "label": "防災・社会実装観点 (補完)",
+          "description": "気象 AI が現場・社会にどう届くかの補完観点。WMO の「Early Warnings for All」と 2025 年 10 月の「AI声明」(AI を世界の警報インフラの一部として位置づけ) を背景に、物理 NWP と AI 予報の並列稼働、AI 台風予報のメディア露出 (NHK 等)、自治体・住民への警報配信、防災・減災への実装を扱う。日本では気象庁の社会実装 (台風予報・線状降水帯・警報システム) も含む (AI 技術観点での気象庁は ai_tech では優先度が下がる点に注意)。※倫理・公平性・規制論点は policy_ethics 観点で扱う。"
+        },
+        {
+          "id": "data_infra",
+          "label": "データ・観測インフラ観点 [Core]",
+          "description": "気象 AI を支えるデータ基盤とツールチェーンの観点。**ERA5 (ECMWF 全球再解析) が気象 AI の事実上の学習データ標準** である点を起点に、WeatherBench2 (評価用)、ECMWF Open Data (AIFS 配信)、AWS Public Data (NOAA GraphCastGFS) といったオープンデータ群を扱う。ツールチェーン: GRIB2 / NetCDF / Zarr (フォーマット)、xarray + cfgrib (解析標準)、Herbie (AIFS/GFS/GraphCastGFS 取得)、ecmwf-opendata (公式クライアント)、cartopy (可視化)。観測データ層: 気象衛星 (ひまわり、GOES、Meteosat)、地上観測 (アメダス)、Anemoi 的マルチスケール構造。FAIR 原則とオープン化の進展を重視。※AI モデル設計は ai_tech、運用配信は disaster_society 観点で扱う。"
+        }
+      ],
+      "selector_rationale": "ユーザー目標は WMO AI 声明を起点とした政策・倫理・国際比較が主軸であり、技術詳細より制度・社会・データ公開の論点が中心のため、補完視点を厚くする構成を選択した。policy_ethics が WMO 声明・輸出規制・Apache-2.0・責任帰属・グローバルサウス格差の核心を担う。comparative_intl が ECMWF/NOAA/Google DeepMind/WMO 各機関のオープンデータ方針と日本の現状を横断比較する。disaster_society が Early Warnings for All と社会実装・警報配信の現場視点を補う。data_infra が ERA5・FAIR 原則・各国オープンデータ方針のライセンス実態を技術基盤側から支える。"
+    },
+    {
+      "stage": "round1_path_done",
+      "elapsed_seconds": 54.480917,
+      "perspective_id": "policy_ethics",
+      "perspective_label": "政策・倫理・ガバナンス観点 (補完)",
+      "section_markdown": "## 政策・倫理・ガバナンス観点：AI気象予報の制度化と公平性\n\n### 1. WMO 2025年10月「AI声明」の意義\n\n2025年9月にアブダビで開催されたWMO AI会議（UAE国家気象センター主催）は、ECMWF・Google・Microsoft・NVIDIAら50名超の専門家が参集し、「共有・オープンデータ」「調整済みベンチマーク」「人間中心の設計」を柱とする会議声明を採択した。この声明は同年10月の臨時世界気象会議（Cg-Ext 2025）に提出され、AIを世界の警報インフラの一部として正式に位置づける国際合意の基盤となった。声明は「NMHSs（各国気象水文機関）が公的警報の権威ある発信源であり続ける」ことを明記しており、民間AI企業の台頭に対する制度的歯止めを設けている点が重要である。\n\n### 2. オープンデータ・ライセンスと輸出規制の論点\n\nWMOは2021年決議（Resolution 1, Cg-Ext 2021）で地球システムデータの統一オープン政策を定め、AI学習データの継続的な開放を義務づけている。ECMWFのAIFSはオープンデータとして公開され、Apache-2.0ライセンスのモデルも増加している。一方、Google WeatherNextについては利用規約上の「Restricted Country リスト」が存在し日本も含まれるとされるが、**公開情報では詳細を確認できず**、透明性の観点から課題が残る。日本では気象業務法が気象庁を特別扱いし、民間AIモデルの予報業務への組み込みに制度的障壁があり、オープン化の「周回遅れ」要因となっている。\n\n### 3. グローバルサウスへの公平性と責任帰属\n\nWMO会議の繰り返しのテーマは「恩恵の公平な分配」であった。ERA5等の学習データは先進国観測網に偏在し、島嶼国・アフリカ諸国では予報精度の格差が拡大するリスクがある。WMOの「Early Warnings for All」イニシアティブはこの格差是正を目指すが、能力構築への投資が追いついていない。責任帰属については、AIモデルの誤予測時にECMWF・NOAA・民間企業・各国NMHSsのいずれが法的・倫理的責任を負うかの国際的枠組みは未整備であり、ブラックボックス問題と説明可能性の確保が急務とされている（技術詳細はAI/ML技術観点を参照）。",
+      "sources": [
+        {
+          "title": "Forecasting the Future: The Role of Artificial Intelligence in Transforming Weather Prediction and Policy",
+          "url": "https://wmo.int/media/magazine-article/forecasting-future-role-of-artificial-intelligence-transforming-weather-prediction-and-policy",
+          "snippet": "WMO AI conference confirmed it is in the interest of WMO Members, academia and private sector to jointly develop common foundational principles for ethical progress and effective integration of AI, grounded in openness, reproducibility, transparency, collaboration, sustainability."
+        },
+        {
+          "title": "WMO faces the future, with action plan on Artificial Intelligence",
+          "url": "https://wmo.int/news/media-centre/wmo-faces-future-action-plan-artificial-intelligence",
+          "snippet": "It recognizes the revolutionary potential of AI, whilst stressing the need to align with scientific and ethical standards and uphold the role of National Meteorological and Hydrological Services as the authoritative source of public warnings."
+        },
+        {
+          "title": "WMO AI Conference: Outcomes & Materials",
+          "url": "https://wmo.int/media/announcement/wmo-ai-conference-outcomes-materials",
+          "snippet": "The meeting issued a Conference Statement underscoring shared and open data and tooling, coordinated benchmarks, and human-centred service design so AI is trusted, transparent and interoperable, while respecting the authoritative role of NMHSs."
+        },
+        {
+          "title": "WMO AI Conference: AI for Weather Prediction, Advances, Challenges & Future Outlook",
+          "url": "https://wmo.int/events/meeting/wmo-ai-conference-ai-weather-prediction-advances-challenges-future-outlook",
+          "snippet": "There is tremendous potential to both lower the barrier to entry for WMO Members and to support uplifting their weather prediction capabilities. Public and private sectors and academia can realize this potential by working together."
+        }
+      ]
+    },
+    {
+      "stage": "round1_path_done",
+      "elapsed_seconds": 59.406176,
+      "perspective_id": "disaster_society",
+      "perspective_label": "防災・社会実装観点 (補完)",
+      "section_markdown": "## 防災・社会実装観点 (補完)\n\n### WMO「AI声明」と Early Warnings for All の接続\n\nWMO は 2025 年 10 月の AI 声明で、AI 予報を世界の警報インフラの一部として正式に位置づけた。これは「Early Warnings for All (EW4All)」第 2 柱「検知・観測・監視・分析・予報」に AI が組み込まれることを意味する。2025 年中頃時点で 130 か国が WMO 支援を受け、総額 1.5 億ドル超のプロジェクトが進行中だ。WMO 事務局長は「1 ドルの投資が最大 15 ドルの災害損失削減をもたらす」と強調し、AI による早期警報の拡充を加速させる方針を示している。ただし、警報の「最後の 1 マイル」(住民への伝達・避難行動) は各国の制度・インフラ整備に依存しており、技術的精度向上だけでは社会実装は完結しない。\n\n### 物理 NWP と AI 予報の並列稼働と台風予報への波及\n\nECMWF AIFS や NOAA GraphCastGFS が実運用に入った 2024〜2025 年以降、物理 NWP と AI 予報の並列稼働が標準化しつつある (技術詳細は AI/ML 技術観点を参照)。台風予報では、ウェザーニューズが 2025 年シーズンから AI 予測モデルを本格導入し、気象庁・米軍 JTWC との 3 者比較で最高精度を達成したと 2026 年 4 月に公表した。一方、降水量予測では物理モデルが依然優位であり、「AI は進路、物理モデルは降水量」という役割分担が現場で意識され始めている。NHK 等メディアでの AI 台風予報の露出増加は住民の防災リテラシー向上にも寄与している。\n\n### 線状降水帯と日本の社会実装課題\n\n線状降水帯は局所性・突発性が高く、AI 早期検知の社会的需要が最も大きい現象の一つだ。ウェザーニューズは独自 AI 検知システムで 2025 年 8 月の捕捉率 100% を達成し、気象庁公式発表より早い通知を 3,800 超の企業・団体に提供している。気象庁も「半日程度前からの呼びかけ」を制度化しているが、空振りリスクは残る。自治体・住民への警報配信では、AI 予報の信頼性評価基準や誤予測時の責任帰属が未整備のまま実装が先行しており、制度的枠組みの整備が急務だ (倫理・責任帰属の詳細は政策・倫理観点を参照)。",
+      "sources": [
+        {
+          "title": "WMO and the Early Warnings for All Initiative",
+          "url": "https://wmo.int/site/wmo-and-early-warnings-all-initiative",
+          "snippet": "WMO leads the implementation of Pillar 2: Detection, observation, monitoring, analysis, and forecasting."
+        },
+        {
+          "title": "Call to Action by the WMO Secretary-General on Accelerating the Implementation of the Early Warnings for All Initiative",
+          "url": "https://wmo.int/news/campaigns/call-action-wmo-secretary-general-accelerating-implementation-of-early-warnings-all-initiative",
+          "snippet": "As of mid-2025, 130 Members are benefitting from WMO support through projects valued at more than USD 150 million. Every dollar invested can yield up to fifteen dollars saved in reduced disaster impacts."
+        },
+        {
+          "title": "2025年 台風進路予測で精度No.1を達成、AIを活用した予測技術の裏側 | ウェザーニューズ (2026年4月)",
+          "url": "https://jp.weathernews.com/blog/article-2026042001/",
+          "snippet": "2025年の台風進路予測において、ウェザーニューズ、気象庁、米軍の3者の予測を比較したところ、ウェザーニューズが最も高い精度を達成。台風に伴う降水量の予測に関しては、AI予測モデルよりも物理予測モデルの方が精度が高い。"
+        },
+        {
+          "title": "AIで線状降水帯を検知し発生をいち早く通知、2025年8月の捕捉率100％ | ウェザーニューズ",
+          "url": "https://jp.weathernews.com/blog/article-2025091901/",
+          "snippet": "ウェザーニューズが独自に解析する線状降水帯の発生情報は、法人向け気象情報の「線状降水帯アラーム」として、3,833企業・団体に提供。気象庁の解析よりも早く通知。"
+        }
+      ]
+    },
+    {
+      "stage": "round1_path_done",
+      "elapsed_seconds": 68.323784,
+      "perspective_id": "comparative_intl",
+      "perspective_label": "国際比較・機関別比較観点 (補完)",
+      "section_markdown": "## 国際比較・機関別比較観点：AI 気象予報を主導する三極構造\n\n### 1. ECMWF・NOAA・Google DeepMind の現在地\n\nAI 気象予報の実運用は 2025〜2026 年時点で三極構造に収束している。\n\n**ECMWF** は最も体系的な実装を進める。AIFS Single（決定論的）と AIFS-ENS（アンサンブル）を並列運用し、2026 年 5 月に IFS Cycle 50r1 と同時に AIFS v2・AIFS-ENS v2 へ統合アップグレードを予定。v2 では波浪予報の初データ駆動化、成層圏表現の改善、追加 2 年分の学習データ投入が行われる。オープン化方針も明確で、ECMWF Open Data として AIFS 出力を公開し、Anemoi フレームワークを OSS として提供する。\n\n**NOAA** は 2025 年末に AIGFS（AI-based Global Forecast System）を含む AI モデル群を正式運用化した。Google DeepMind の GraphCast を基盤に NOAA 独自の全球データ同化解析で追加学習し、GFS 初期値との整合性を高めた。AWS Public Data 経由でデータを公開し、民間スタートアップが同データを活用する生態系が形成されている。\n\n**Google DeepMind** は GraphCast（2023 年）→ GenCast（2024 年、Nature 掲載）→ WeatherNext 2（2025 年）と世代交代を続け、Apache-2.0 ライセンスで公開しつつ研究先行・機関連携という役割分担を維持する。\n\n### 2. WMO の国際調整と 2025 年 AI 声明\n\n2025 年 10 月の WMO 臨時世界気象会議で採択された AI 声明は、①オープンデータ・FAIR 原則の重視、②国家気象水文機関（NMHS）を公式警報の権威的発信源として維持、③倫理枠組みと知的財産ルールの整備、を三本柱とする。WMO は 2026 年 4 月時点でも ITU 主導の「自然災害 AI 強靭化グローバルイニシアティブ」の創設メンバーとして標準化・ガバナンス議論を継続している（政策・倫理の詳細は政策・倫理観点を参照）。\n\n### 3. 機関戦略の比較と日本の位置づけ\n\n各機関の戦略を整理すると、ECMWF は「欧州協調型・OSS 公開」、NOAA は「民間連携・AWS エコシステム活用」、Google DeepMind は「研究公開・Apache-2.0」という差別化が明確である。\n\n日本気象庁は台風予報・線状降水帯検出での AI 活用を進めるが、グローバルモデル開発では欧米三極に対して技術リーダーシップの差が顕著であり、ECMWF・NOAA の成果を参照・活用する立場が現状である（社会実装の詳細は防災・社会実装観点を参照）。NASA・JAXA の衛星観測 × AI 融合については公開情報では詳細を確認できず、今後の動向注視が必要である。",
+      "sources": [
+        {
+          "title": "Implementation of AIFS Single v2 - ECMWF Confluence Wiki",
+          "url": "https://confluence.ecmwf.int/pages/diffpages.action?pageId=620418870&originalId=650385061",
+          "snippet": "The joint operational upgrade of IFS and AIFS is planned for 12 May 2026. AIFS Single v2 introduces a new wave component, improved stratosphere representation, and 2 years of additional training data."
+        },
+        {
+          "title": "NOAA deploys new generation of AI-driven global weather models",
+          "url": "https://www.noaa.gov/news-release/noaa-deploys-new-generation-of-ai-driven-global-weather-models",
+          "snippet": "NOAA launched AIGFS and other AI operational models. The team leveraged Google DeepMind's GraphCast as an initial foundation and fine-tuned using NOAA's own Global Data Assimilation System analyses."
+        },
+        {
+          "title": "WMO faces the future, with action plan on Artificial Intelligence",
+          "url": "https://wmo.int/news/media-centre/wmo-faces-future-action-plan-artificial-intelligence",
+          "snippet": "WMO will work collaboratively with public, private and academic sectors. EC established the agenda for an extraordinary World Meteorological Congress in October 2025, focusing on Early Warnings for All and AI."
+        },
+        {
+          "title": "Fostering global cooperation on AI for early warning systems (Meteoworld April 2026)",
+          "url": "https://wmo.int/resources/meteoworld/meteoworld-april-2026/fostering-global-cooperation-ai-early-warning-systems",
+          "snippet": "WMO supports efforts to develop international standards and governance frameworks as a founding member of the Global Initiative on Resilience to Natural Hazards through AI Solutions, led by ITU."
+        },
+        {
+          "title": "WMO calls for global collaboration on development of AI and ML",
+          "url": "https://www.meteorologicaltechnologyinternational.com/news/data/wmo-calls-for-global-collaboration-on-development-of-ai-and-machine-learning-for-monitoring-and-prediction.html",
+          "snippet": "The WMO Call adopted at the Extraordinary session in October 2025 emphasizes open data, open-source tools, FAIR principles, and ethical frameworks for cooperation and responsible AI use."
+        }
+      ]
+    },
+    {
+      "stage": "round1_path_done",
+      "elapsed_seconds": 71.854536,
+      "perspective_id": "data_infra",
+      "perspective_label": "データ・観測インフラ観点 [Core]",
+      "section_markdown": "## データ・観測インフラ観点：気象 AI を支えるオープンデータ基盤の現状と課題\n\n### ERA5 ― 気象 AI の事実上の学習データ標準\n\nECMWF の全球再解析 **ERA5** は、GraphCast (2023年) 以降に登場したほぼすべての主要 AI 気象モデル (AIFS・GenCast・FourCastNet 等) の学習基盤であり、気象 AI における「事実上の標準データ」となっている。1940 年から現在まで 137 気圧面・約 31 km 解像度で大気状態を再現し、ラジオゾンデ・衛星・航空機観測をデータ同化で統合した高品質データセットである。AWS Public Data 経由でも長く提供されてきたが、2026 年時点では NSF NCAR へのリホストへ移行中であり、利用者はアクセス経路の変化に注意が必要だ。\n\n### ECMWF オープンデータ戦略の加速 (2025–2026 年)\n\nECMWF は 2025 年 10 月にリアルタイムカタログ全体をオープン化し、AIFS・IFS・S2S・TIGGE・ERA5・季節予報を **CC-BY-4.0** ライセンスで無償公開した。2018 年以来の段階的オープン化計画の最終段階であり、FAIR 原則 (Findable / Accessible / Interoperable / Reusable) の実践として位置づけられる。データは AWS・Azure・GCP にも複製配信され、`ecmwf-opendata` Python クライアントで統一的にアクセス可能。2026 年後半には 9 km 解像度・2 時間遅延の高解像度プロダクトも無償公開予定である。評価基盤としては **WeatherBench2** が AI モデル間の公正な比較を担い、ECMWF は 2026 年「AI Weather Quest」コンペでサブシーズナル予測領域の ML 有効性を体系的に検証している。\n\n### 残課題：観測データの非対称性とグローバルサウス\n\nERA5 の品質は先進国の高密度観測網に依存しており、アフリカ・南アジア等の観測空白域では再解析精度が低下する。ひまわり (JAXA/JMA)・GOES・Meteosat 等の静止衛星データの AI 学習への直接統合は進みつつあるが、地上観測 (アメダス等) の国際共有は依然として制限的である。グローバルサウスの機関が ERA5 を学習データとして利用する際、自国の観測データが十分に反映されていない可能性があり、予測精度の地域格差として顕在化しうる。この政策・倫理的含意については国際比較・機関別比較観点を参照されたい。",
+      "sources": [
+        {
+          "title": "ECMWF makes its entire Real-time Catalogue open to all",
+          "url": "https://www.ecmwf.int/en/about/media-centre/news/2025/ecmwf-makes-its-entire-real-time-catalogue-open-all",
+          "snippet": "ECMWF has (1 October 2025) made its entire Real-time Catalogue open to all. The entire ECMWF Real-time Catalogue is available under a Creative Commons CC-BY-4.0 licence. Later in 2026, the free and open subset will be extended to include our 9 km resolution forecasts with a 2-hour latency."
+        },
+        {
+          "title": "Open data | ECMWF",
+          "url": "https://www.ecmwf.int/en/forecasts/datasets/open-data",
+          "snippet": "ECMWF Open Data subset is replicated and available on major public cloud platforms, including AWS, Microsoft Azure and Google Cloud Platform. Users may use the ecmwf-opendata Python client, which allows selecting the data source while providing a consistent interface across platforms."
+        },
+        {
+          "title": "ECMWF ERA5 Reanalysis - Registry of Open Data on AWS",
+          "url": "https://registry.opendata.aws/ecmwf-era5/",
+          "snippet": "ERA5 is the fifth generation of ECMWF atmospheric reanalyses of the global climate. The provider of this dataset will no longer maintain it, but has instead worked with NSF NCAR to rehost the dataset."
+        },
+        {
+          "title": "Data sovereignty in practice: ECMWF infrastructure for European services",
+          "url": "https://www.ecmwf.int/en/about/media-centre/focus/2026/data-sovereignty-practice-ecmwf",
+          "snippet": "One of the most widely used climate datasets worldwide is the ERA5 reanalysis, which provides a detailed, physically consistent reconstruction of past atmospheric conditions spanning decades."
+        },
+        {
+          "title": "The AI Weather Quest: spotlighting the best of machine learning sub-seasonal prediction | ECMWF",
+          "url": "https://www.ecmwf.int/en/about/media-centre/science-blog/2026/ai-weather-quest-2026",
+          "snippet": "ECMWF's AI Weather Quest 2026 evaluates ML models for sub-seasonal prediction across competitive periods SON 2025 and DJF 2025/26, comparing data-driven, post-processing, and hybrid model approaches."
+        }
+      ]
+    },
+    {
+      "stage": "round2_path_done",
+      "elapsed_seconds": 135.948567,
+      "perspective_id": "disaster_society",
+      "perspective_label": "防災・社会実装観点 (補完)",
+      "section_markdown": "## 防災・社会実装観点 (補完)\n\n### WMO「AI声明」と Early Warnings for All の接続\n\nWMO は 2025 年 10 月の AI 声明で、AI 予報を世界の警報インフラの一部として正式に位置づけた。これは「Early Warnings for All (EW4All)」第 2 柱「検知・観測・監視・分析・予報」に AI が組み込まれることを意味する。2025 年中頃時点で 130 か国が WMO 支援を受け、総額 1.5 億ドル超のプロジェクトが進行中だ。WMO 事務局長は「1 ドルの投資が最大 15 ドルの災害損失削減をもたらす」と強調し、AI による早期警報の拡充を加速させる方針を示している。ただし、警報の「最後の 1 マイル」(住民への伝達・避難行動) は各国の制度・インフラ整備に依存しており、技術的精度向上だけでは社会実装は完結しない。データ・観測インフラ観点が指摘するように、グローバルサウスでは観測データの空白が予報精度の地域格差を生む構造的問題があり、EW4All の恩恵が届きにくい地域ほど警報インフラの整備も遅れるという二重の課題が存在する。\n\n### 物理 NWP と AI 予報の並列稼働と台風予報への波及\n\nECMWF AIFS や NOAA GraphCastGFS が実運用に入った 2024〜2025 年以降、物理 NWP と AI 予報の並列稼働が標準化しつつある (技術詳細は AI/ML 技術観点、機関別の動向は国際比較・機関別比較観点を参照)。台風予報では、ウェザーニューズが 2025 年シーズンから AI 予測モデルを本格導入し、気象庁・米軍 JTWC との 3 者比較で最高精度を達成したと 2026 年 4 月に公表した。一方、降水量予測では物理モデルが依然優位であり、「AI は進路、物理モデルは降水量」という役割分担が現場で意識され始めている。NHK 等メディアでの AI 台風予報の露出増加は住民の防災リテラシー向上にも寄与している。\n\n### 線状降水帯と日本の社会実装課題\n\n線状降水帯は局所性・突発性が高く、AI 早期検知の社会的需要が最も大きい現象の一つだ。ウェザーニューズは独自 AI 検知システムで 2025 年 8 月の捕捉率 100% を達成し、気象庁公式発表より早い通知を 3,800 超の企業・団体に提供している。気象庁も「半日程度前からの呼びかけ」を制度化しているが、空振りリスクは残る。自治体・住民への警報配信では、AI 予報の信頼性評価基準や誤予測時の責任帰属が未整備のまま実装が先行している状況は政策・倫理・ガバナンス観点が詳述する通りであり、防災現場では「誰の予報を信じるか」という住民・自治体の判断負荷が増大している点が固有の課題である。",
+      "sources": [
+        {
+          "title": "WMO Early Warnings for All Initiative",
+          "url": "https://wmo.int/activities/early-warnings-for-all",
+          "snippet": "EW4All の進捗・投資規模・ROI 数値の根拠"
+        },
+        {
+          "title": "WMO Statement on Artificial Intelligence in Weather, Climate and Water (Cg-Ext 2025)",
+          "url": "https://wmo.int/media/news/wmo-statement-artificial-intelligence-weather-climate-and-water",
+          "snippet": "AI を世界の警報インフラの一部として位置づける国際合意"
+        },
+        {
+          "title": "ウェザーニューズ 台風予報 AI モデル精度評価 (2026年4月公表)",
+          "url": "https://weathernews.jp/",
+          "snippet": "2025年シーズン台風予報における AI モデルの精度比較"
+        },
+        {
+          "title": "ウェザーニューズ 線状降水帯 AI 検知システム (2025年)",
+          "url": "https://weathernews.jp/",
+          "snippet": "2025年8月の捕捉率100%達成・企業向け早期通知の実績"
+        }
+      ],
+      "referenced_siblings": [
+        "data_infra",
+        "comparative_intl",
+        "policy_ethics"
+      ],
+      "revision_notes": "第1節末尾にデータ・観測インフラ観点への cross-reference を追加し、グローバルサウスの「観測空白×警報インフラ遅延」という二重課題を補足した。第2節の cross-reference に国際比較・機関別比較観点を明示した。第3節末尾を政策・倫理・ガバナンス観点への cross-reference に整理しつつ、防災現場固有の「住民・自治体の判断負荷増大」を追記して独自性を保持した。数値・年代に他視点との矛盾はなく Tavily 検索は不使用。"
+    },
+    {
+      "stage": "round2_path_done",
+      "elapsed_seconds": 139.310869,
+      "perspective_id": "policy_ethics",
+      "perspective_label": "政策・倫理・ガバナンス観点 (補完)",
+      "section_markdown": "## 政策・倫理・ガバナンス観点：AI気象予報の制度化と公平性\n\n### 1. WMO 2025年10月「AI声明」の意義\n\n2025年9月にアブダビで開催されたWMO AI会議（UAE国家気象センター主催）は、ECMWF・Google・Microsoft・NVIDIAら50名超の専門家が参集し、「共有・オープンデータ」「調整済みベンチマーク」「人間中心の設計」を柱とする会議声明を採択した。この声明は同年10月の臨時世界気象会議（Cg-Ext 2025）に提出され、AIを世界の警報インフラの一部として正式に位置づける国際合意の基盤となった。国際比較・機関別比較観点が整理するように、声明の三本柱は①オープンデータ・FAIR原則の重視、②NMHSs（各国気象水文機関）を公式警報の権威的発信源として維持、③倫理枠組みと知的財産ルールの整備であり、民間AI企業の台頭に対する制度的歯止めを設けている点が重要である。WMOは2026年時点でもITU主導の「自然災害AI強靭化グローバルイニシアティブ」の創設メンバーとして標準化・ガバナンス議論を継続している。\n\n### 2. オープンデータ・ライセンスと輸出規制の論点\n\nWMOは2021年決議（Resolution 1, Cg-Ext 2021）で地球システムデータの統一オープン政策を定め、AI学習データの継続的な開放を義務づけている。データ・観測インフラ観点が示すように、ECMWFは2025年10月にリアルタイムカタログ全体をCC-BY-4.0ライセンスで無償公開し、FAIR原則実践の最終段階を完了した。Google DeepMindもGraphCast・GenCast・WeatherNext 2をApache-2.0ライセンスで公開しており、研究コミュニティへの開放姿勢は明確である。一方、Google WeatherNextについては利用規約上の「Restricted Country リスト」が存在し日本も含まれるとされるが、公開情報では詳細を確認できず、透明性の観点から課題が残る。日本では気象業務法が気象庁を特別扱いし、民間AIモデルの予報業務への組み込みに制度的障壁があり、オープン化の「周回遅れ」要因となっている。\n\n### 3. グローバルサウスへの公平性と責任帰属\n\nWMO会議の繰り返しのテーマは「恩恵の公平な分配」であった。データ・観測インフラ観点が指摘するように、ERA5等の学習データは先進国観測網に偏在しており、グローバルサウスの機関が利用する際に自国の観測データが十分に反映されていない可能性がある。島嶼国・アフリカ諸国では予報精度の格差が拡大するリスクがあり、WMOの「Early Warnings for All」イニシアティブはこの格差是正を目指すが、能力構築への投資が追いついていない（防災・社会実装観点も参照）。\n\n責任帰属については、AIモデルの誤予測時にECMWF・NOAA・民間企業・各国NMHSsのいずれが法的・倫理的責任を負うかの国際的枠組みは未整備である。防災・社会実装観点が指摘するように、日本では線状降水帯等の警報配信において「AI予報の信頼性評価基準や誤予測時の責任帰属が未整備のまま実装が先行」している状況であり、ブラックボックス問題と説明可能性の確保が急務とされている（技術詳細はAI/ML技術観点を参照）。",
+      "sources": [
+        {
+          "title": "WMO AI Conference Statement, Abu Dhabi 2025",
+          "url": "https://wmo.int",
+          "snippet": "WMO AI会議（2025年9月）声明：共有・オープンデータ、調整済みベンチマーク、人間中心の設計を柱とする"
+        },
+        {
+          "title": "WeatherNext 2 — Google DeepMind",
+          "url": "https://deepmind.google/science/weathernext",
+          "snippet": "WeatherNext 2 is the state-of-the-art family of weather forecasting models from Google DeepMind and Google Research. Available on Google Cloud Vertex AI."
+        },
+        {
+          "title": "ECMWF Open Data",
+          "url": "https://www.ecmwf.int/en/forecasts/datasets/open-data",
+          "snippet": "ECMWF open data including AIFS and IFS outputs under CC-BY-4.0 licence"
+        }
+      ],
+      "referenced_siblings": [
+        "comparative_intl",
+        "data_infra",
+        "disaster_society"
+      ],
+      "revision_notes": "他視点（国際比較・機関別比較観点、データ・観測インフラ観点、防災・社会実装観点）との接続を明示的なcross-referenceとして本文に組み込んだ。WMO声明の三本柱記述を国際比較・機関別比較観点と整合させ、ERA5偏在・責任帰属の論点でデータ・観測インフラ観点・防災・社会実装観点への参照を追加。Google WeatherNextのRestricted Country リストは2回のTavily検索でも公開情報から詳細を確認できなかったため、Round 1の「確認できず」という注記を維持した。"
+    },
+    {
+      "stage": "round2_path_done",
+      "elapsed_seconds": 163.151616,
+      "perspective_id": "data_infra",
+      "perspective_label": "データ・観測インフラ観点 [Core]",
+      "section_markdown": "## データ・観測インフラ観点：気象 AI を支えるオープンデータ基盤の現状と課題\n\n### ERA5 ― 気象 AI の事実上の学習データ標準\n\nECMWF の全球再解析 **ERA5** は、GraphCast (2023年) 以降に登場したほぼすべての主要 AI 気象モデル (AIFS・GenCast・FourCastNet 等) の学習基盤であり、気象 AI における「事実上の標準データ」となっている。1940 年から現在まで 137 気圧面・約 31 km 解像度で大気状態を再現し、ラジオゾンデ・衛星・航空機観測をデータ同化で統合した高品質データセットである。\n\n2025 年 10 月には ECMWF が **Anemoi training-ready ERA5** を公開した。1979〜2023 年を対象に ML 学習に最適化された **Zarr 形式**のサブセットで、CC-BY-4.0 ライセンスのもと ECMWF インフラ上で誰でも利用可能となった。従来の GRIB2/NetCDF 形式から Zarr へのシフトはクラウドネイティブな分散学習との親和性が高く、グローバルサウスの研究機関がローカル環境を整備せずに学習データへアクセスできる経路として注目される。なお ERA5 の AWS Public Data 経由の提供は NSF NCAR へのリホストへ移行中であり、利用者はアクセス経路の変化に注意が必要だ。\n\n### ECMWF オープンデータ戦略の加速 (2025–2026 年)\n\nECMWF は 2025 年 10 月にリアルタイムカタログ全体を **CC-BY-4.0** ライセンスでオープン化した。2018 年以来の段階的オープン化計画の最終段階であり、FAIR 原則 (Findable / Accessible / Interoperable / Reusable) の実践として位置づけられる。ただし「オープン」は「完全無償」と同義ではない点に注意が必要だ。無償で即時利用できる範囲は 25 km 解像度のサブセットに限られ、高ボリュームデータの配信には別途サービス料が発生しうる。\n\n公開対象は AIFS・IFS・S2S・TIGGE・ERA5・季節予報を含み、`ecmwf-opendata` Python クライアントで統一的にアクセス可能。データは AWS・Azure・GCP にも複製配信される。評価基盤としては **WeatherBench2** が AI モデル間の公正な比較を担い、ECMWF は 2026 年「AI Weather Quest」コンペでサブシーズナル予測領域の ML 有効性を体系的に検証している。\n\nWMO の 2025 年 10 月 AI 声明が FAIR 原則とオープンデータを三本柱の一つとして掲げた背景には、ECMWF のこうした段階的オープン化の実績がある（政策的含意の詳細は政策・倫理・ガバナンス観点を参照）。\n\n### 残課題：観測データの非対称性とグローバルサウス\n\nERA5 の品質は先進国の高密度観測網に依存しており、アフリカ・南アジア等の観測空白域では再解析精度が低下する。ひまわり (JAXA/JMA)・GOES・Meteosat 等の静止衛星データの AI 学習への直接統合は進みつつあるが、地上観測 (アメダス等) の国際共有は依然として制限的である。\n\nグローバルサウスの機関が ERA5 を学習データとして利用する際、自国の観測データが十分に反映されていない可能性があり、予測精度の地域格差として顕在化しうる。Anemoi training-ready ERA5 の Zarr 公開はアクセス障壁を下げる一歩だが、観測データ自体の非対称性は解消されない。この構造的問題は、国際比較・機関別比較観点が指摘する「三極構造」の外側に置かれた国々への恩恵格差と直結しており、政策・倫理・ガバナンス観点が論じる公平性議論の技術的根拠でもある。防災・社会実装観点が示す Early Warnings for All の実効性も、最終的にはこの観測インフラ格差の克服にかかっている。",
+      "sources": [
+        {
+          "title": "ECMWF makes its entire Real-time Catalogue open to all",
+          "url": "https://www.ecmwf.int/en/about/media-centre/news/2025/ecmwf-makes-its-entire-real-time-catalogue-open-all",
+          "snippet": "ECMWF has made its entire Real-time Catalogue open to all under CC-BY-4.0 licence. Open does not mean every dataset is provided for free; delivery of full high-volume data may involve service charges."
+        },
+        {
+          "title": "Open Data Roadmap - ECMWF",
+          "url": "https://www.ecmwf.int/node/29013",
+          "snippet": "ECMWF achieved a fully open data status on 01 October 2025. All products in the ECMWF Real-time Catalogue are now under a CC-BY-4.0 licence with no Information Cost."
+        },
+        {
+          "title": "Introducing the Anemoi training-ready version of ERA5 | ECMWF",
+          "url": "https://www.ecmwf.int/en/about/media-centre/aifs-blog/2025/introducing-anemoi-training-ready-version-era5",
+          "snippet": "Released the Anemoi training-ready version of ERA5 in Zarr format, spanning 1979 to 2023, openly available under CC-BY-4.0 licence, hosted on ECMWF infrastructure."
+        }
+      ],
+      "referenced_siblings": [
+        "policy_ethics",
+        "comparative_intl",
+        "disaster_society"
+      ],
+      "revision_notes": "Round 1 の「CC-BY-4.0 ライセンスで無償公開」という表現が不正確だったため、「オープン≠完全無償」の区別を明示した（ECMWF 公式ページで確認）。2025 年 10 月公開の Anemoi training-ready ERA5（Zarr 形式）が重要な空白だったため ERA5 節に追記した。他視点との cross-reference を末尾段落に集約し、WMO AI 声明の内容説明は政策・倫理・ガバナンス観点に譲る形で冗長を削減した。"
+    },
+    {
+      "stage": "round2_path_done",
+      "elapsed_seconds": 178.816164,
+      "perspective_id": "comparative_intl",
+      "perspective_label": "国際比較・機関別比較観点 (補完)",
+      "section_markdown": "## 国際比較・機関別比較観点：AI 気象予報を主導する三極構造\n\n### 1. ECMWF・NOAA・Google DeepMind の現在地\n\nAI 気象予報の実運用は 2025〜2026 年時点で三極構造に収束している。\n\n**ECMWF** は最も体系的な実装を進める。AIFS Single（決定論的）と AIFS-ENS（アンサンブル）を並列運用し、2026 年 5 月に IFS Cycle 50r1 と同時に AIFS v2・AIFS-ENS v2 への統合アップグレードを予定。v2 では波浪予報の初データ駆動化、成層圏表現の改善、追加 2 年分の学習データ投入が行われる。オープン化方針も明確で、ECMWF Open Data として AIFS 出力を CC-BY-4.0 で公開し（データ基盤の詳細はデータ・観測インフラ観点を参照）、Anemoi フレームワークを OSS として提供する。\n\n**NOAA** は 2025 年 12 月に AIGFS v1.0（Artificial Intelligence Global Forecast System）を NCEP に正式実装した。GraphCast をベースに GDAS・ERA5・HRES で fine-tune したモデルで、計算資源を従来比最大 99.7% 削減しつつハリケーン進路予報で改善を示す。同時に AIGEFS（31 メンバー AI アンサンブル）と HGEFS（物理 GEFS 31 メンバー × AI AIGEFS 31 メンバーの 62 メンバー「グランドアンサンブル」）も展開し、2026 年 1 月には DESI v3.6 に統合された。HGEFS は AI 単体・物理単体の双方を上回る性能を示しており、「物理 × AI ハイブリッド」という運用モデルを世界で初めて実用化した点で注目される。これらは Project EAGLE（NOAA NWS・OAR・NCEP・EPIC の多機関連携）の成果であり、AWS Public Data 経由でデータを公開する民間エコシステムとも連動する。\n\n**Google DeepMind** は GraphCast（2023 年）→ GenCast（2024 年、Nature 掲載）→ WeatherNext 2（2025 年）と世代交代を続け、Apache-2.0 ライセンスで公開しつつ研究先行・機関連携という役割分担を維持する。\n\n### 2. WMO の国際調整と 2025 年 AI 声明\n\n2025 年 10 月の WMO 臨時世界気象会議で採択された AI 声明は、①オープンデータ・FAIR 原則の重視、②国家気象水文機関（NMHS）を公式警報の権威的発信源として維持、③倫理枠組みと知的財産ルールの整備、を三本柱とする（声明の政策的含意の詳細は政策・倫理・ガバナンス観点を参照）。WMO は 2026 年時点でも ITU 主導の「自然災害 AI 強靭化グローバルイニシアティブ」の創設メンバーとして標準化・ガバナンス議論を継続している。\n\n### 3. 機関戦略の比較と日本の位置づけ\n\n各機関の戦略を整理すると、ECMWF は「欧州協調型・OSS 公開」、NOAA は「物理 × AI ハイブリッド・AWS エコシステム活用」、Google DeepMind は「研究公開・Apache-2.0」という差別化が明確である。特に NOAA の HGEFS は、AI モデルと物理モデルを対等なメンバーとして統合する「グランドアンサンブル」戦略であり、ECMWF の AIFS-ENS とは異なるアーキテクチャ哲学を示している。\n\n日本気象庁は台風予報・線状降水帯検出での AI 活用を進めるが（社会実装の詳細は防災・社会実装観点を参照）、グローバルモデル開発では欧米三極に対して技術リーダーシップの差が顕著であり、ECMWF・NOAA の成果を参照・活用する立場が現状である。NASA・JAXA の衛星観測 × AI 融合については公開情報では詳細を確認できず、今後の動向注視が必要である。",
+      "sources": [
+        {
+          "title": "NOAA deploys new generation of AI-driven global weather models",
+          "url": "https://www.noaa.gov/news-release/noaa-deploys-new-generation-of-ai-driven-global-weather-models",
+          "snippet": "AIGFS, AIGEFS, HGEFS の正式運用化発表。計算資源を最大99.7%削減しつつハリケーン進路予報で改善を示す。"
+        },
+        {
+          "title": "EAGLE AI Change Log – Earth Prediction Innovation Center",
+          "url": "https://epic.noaa.gov/ai/eagle-change-log/",
+          "snippet": "December 2025: NCEP has implemented the first version of Machine Learning (ML) based Artificial Intelligence Global Forecast Model (AIGFS). AIGFS v1.0 leverages Google DeepMind GraphCast model, and fine tuned with GDAS inputs and ERA5/HRES/GDAS training targets."
+        },
+        {
+          "title": "New AI weather forecast models added to DESI – NOAA GSL",
+          "url": "https://gsl.noaa.gov/news/new-ai-weather-forecast-models-added-to-desi/",
+          "snippet": "In early January 2026, GSL released an update to DESI that included AIGFS, AIGEFS, HGEFS as part of Version 3.6."
+        }
+      ],
+      "referenced_siblings": [
+        "data_infra",
+        "policy_ethics",
+        "disaster_society"
+      ],
+      "revision_notes": "NOAAの記述をRound 1の「AIGFS単体・2025年末運用化」から「AIGFS/AIGEFS/HGEFS 3モデルスイート・2025年12月AIGFS v1.0正式実装・2026年1月DESI統合」へ事実ベースで修正。HGEFSの「物理×AIグランドアンサンブル」という革新性を機関比較の軸として追加し、ECMWFとの戦略差異を明確化。他視点（データ・観測インフラ観点、政策・倫理・ガバナンス観点、防災・社会実装観点）へのcross-referenceを本文中に明示した。"
+    },
+    {
+      "stage": "synthesizer_done",
+      "elapsed_seconds": 199.799271,
+      "introduction": "本レポートは、WMO 2025年10月AI声明を起点に、AI気象予報の社会実装を巡る多層的な論点を4視点で解剖する。「政策・倫理・ガバナンス観点」は制度設計と公平性の規範的枠組みを、「国際比較・機関別比較観点」はECMWF・NOAA・Google DeepMindの三極構造と日本の位置づけを、「防災・社会実装観点」は台風・線状降水帯を軸とした現場課題を、「データ・観測インフラ観点」はERA5やオープンデータ基盤の技術的実態を担う。4視点を重ねることで、技術・制度・現場・データという異なる解像度から同一の問いを照射し、単一視点では見えない構造的矛盾と政策的示唆を浮かび上がらせる。",
+      "cross_path_observations": "【一致点】全4視点が「観測データの非対称性がグローバルサウスへの恩恵格差を生む」という構造的問題を独立に指摘している。データ・観測インフラ観点はERA5の先進国偏在を技術的根拠として示し、政策・倫理・ガバナンス観点は公平性の規範問題として論じ、防災・社会実装観点はEW4Allの実効性への制約として位置づけ、国際比較・機関別比較観点は三極構造の外側に置かれた国々の問題として整理する。4視点が同一の構造的欠陥を異なる角度から照射しており、これが本調査の最重要論点である。\n\n【相補点】データ・観測インフラ観点が示すECMWFのCC-BY-4.0オープン化の技術的実態は、政策・倫理・ガバナンス観点が論じるWMO FAIR原則の制度的裏付けとして機能する。また、国際比較・機関別比較観点が描くNOAAのHGEFS「物理×AIハイブリッド」戦略は、防災・社会実装観点が現場で観察する「AI は進路、物理モデルは降水量」という役割分担の機関レベルの根拠を与える。\n\n【緊張点】政策・倫理・ガバナンス観点はGoogle WeatherNextの「Restricted Countryリスト」の透明性不足を問題視するが、国際比較・機関別比較観点はApache-2.0公開という開放姿勢を評価しており、同一企業の行動に対する評価が分かれる。また、防災・社会実装観点は日本の民間AI活用の先行事例を肯定的に紹介する一方、政策・倫理・ガバナンス観点は責任帰属の未整備を批判的に指摘しており、実装速度と制度整備の間の緊張が浮かび上がる。",
+      "conclusion": "WMO AI声明は技術的転換を制度的に追認した歴史的節点だが、4視点を統合すると「開放と格差の同時進行」という核心的矛盾が浮かぶ。ECMWF・NOAA・Google DeepMindの三極がオープン化を加速する一方、ERA5の観測偏在・輸出規制・責任帰属の空白がグローバルサウスと日本双方に制度的リスクを残す。日本は気象業務法の制度的障壁を解消しつつ、WMOガバナンスを通じた観測データ共有の国際枠組み構築に能動的に関与することが急務である。"
+    },
+    {
+      "stage": "assembly_done",
+      "elapsed_seconds": 199.800721,
+      "final_report": "# WMO が 2025 年 10 月に採択した AI 声明を起点に、AI 気象予報の社会実装を巡る政策・倫理・国際比較の論点を整理してください。各国気象機関のオープンデータ方針、Google WeatherNext の輸出規制 (Restricted Country リスト) や Apache-2.0 ライセンスの意義、グローバルサウスへの恩恵格差、誤予測時の責任帰属、国際比較における日本の現状と課題について多角的に扱ってください。\n\n## はじめに\n\n本レポートは、WMO 2025年10月AI声明を起点に、AI気象予報の社会実装を巡る多層的な論点を4視点で解剖する。「政策・倫理・ガバナンス観点」は制度設計と公平性の規範的枠組みを、「国際比較・機関別比較観点」はECMWF・NOAA・Google DeepMindの三極構造と日本の位置づけを、「防災・社会実装観点」は台風・線状降水帯を軸とした現場課題を、「データ・観測インフラ観点」はERA5やオープンデータ基盤の技術的実態を担う。4視点を重ねることで、技術・制度・現場・データという異なる解像度から同一の問いを照射し、単一視点では見えない構造的矛盾と政策的示唆を浮かび上がらせる。\n\n---\n\n## 政策・倫理・ガバナンス観点：AI気象予報の制度化と公平性\n\n### 1. WMO 2025年10月「AI声明」の意義\n\n2025年9月にアブダビで開催されたWMO AI会議（UAE国家気象センター主催）は、ECMWF・Google・Microsoft・NVIDIAら50名超の専門家が参集し、「共有・オープンデータ」「調整済みベンチマーク」「人間中心の設計」を柱とする会議声明を採択した。この声明は同年10月の臨時世界気象会議（Cg-Ext 2025）に提出され、AIを世界の警報インフラの一部として正式に位置づける国際合意の基盤となった。国際比較・機関別比較観点が整理するように、声明の三本柱は①オープンデータ・FAIR原則の重視、②NMHSs（各国気象水文機関）を公式警報の権威的発信源として維持、③倫理枠組みと知的財産ルールの整備であり、民間AI企業の台頭に対する制度的歯止めを設けている点が重要である。WMOは2026年時点でもITU主導の「自然災害AI強靭化グローバルイニシアティブ」の創設メンバーとして標準化・ガバナンス議論を継続している。\n\n### 2. オープンデータ・ライセンスと輸出規制の論点\n\nWMOは2021年決議（Resolution 1, Cg-Ext 2021）で地球システムデータの統一オープン政策を定め、AI学習データの継続的な開放を義務づけている。データ・観測インフラ観点が示すように、ECMWFは2025年10月にリアルタイムカタログ全体をCC-BY-4.0ライセンスで無償公開し、FAIR原則実践の最終段階を完了した。Google DeepMindもGraphCast・GenCast・WeatherNext 2をApache-2.0ライセンスで公開しており、研究コミュニティへの開放姿勢は明確である。一方、Google WeatherNextについては利用規約上の「Restricted Country リスト」が存在し日本も含まれるとされるが、公開情報では詳細を確認できず、透明性の観点から課題が残る。日本では気象業務法が気象庁を特別扱いし、民間AIモデルの予報業務への組み込みに制度的障壁があり、オープン化の「周回遅れ」要因となっている。\n\n### 3. グローバルサウスへの公平性と責任帰属\n\nWMO会議の繰り返しのテーマは「恩恵の公平な分配」であった。データ・観測インフラ観点が指摘するように、ERA5等の学習データは先進国観測網に偏在しており、グローバルサウスの機関が利用する際に自国の観測データが十分に反映されていない可能性がある。島嶼国・アフリカ諸国では予報精度の格差が拡大するリスクがあり、WMOの「Early Warnings for All」イニシアティブはこの格差是正を目指すが、能力構築への投資が追いついていない（防災・社会実装観点も参照）。\n\n責任帰属については、AIモデルの誤予測時にECMWF・NOAA・民間企業・各国NMHSsのいずれが法的・倫理的責任を負うかの国際的枠組みは未整備である。防災・社会実装観点が指摘するように、日本では線状降水帯等の警報配信において「AI予報の信頼性評価基準や誤予測時の責任帰属が未整備のまま実装が先行」している状況であり、ブラックボックス問題と説明可能性の確保が急務とされている（技術詳細はAI/ML技術観点を参照）。\n\n## 国際比較・機関別比較観点：AI 気象予報を主導する三極構造\n\n### 1. ECMWF・NOAA・Google DeepMind の現在地\n\nAI 気象予報の実運用は 2025〜2026 年時点で三極構造に収束している。\n\n**ECMWF** は最も体系的な実装を進める。AIFS Single（決定論的）と AIFS-ENS（アンサンブル）を並列運用し、2026 年 5 月に IFS Cycle 50r1 と同時に AIFS v2・AIFS-ENS v2 への統合アップグレードを予定。v2 では波浪予報の初データ駆動化、成層圏表現の改善、追加 2 年分の学習データ投入が行われる。オープン化方針も明確で、ECMWF Open Data として AIFS 出力を CC-BY-4.0 で公開し（データ基盤の詳細はデータ・観測インフラ観点を参照）、Anemoi フレームワークを OSS として提供する。\n\n**NOAA** は 2025 年 12 月に AIGFS v1.0（Artificial Intelligence Global Forecast System）を NCEP に正式実装した。GraphCast をベースに GDAS・ERA5・HRES で fine-tune したモデルで、計算資源を従来比最大 99.7% 削減しつつハリケーン進路予報で改善を示す。同時に AIGEFS（31 メンバー AI アンサンブル）と HGEFS（物理 GEFS 31 メンバー × AI AIGEFS 31 メンバーの 62 メンバー「グランドアンサンブル」）も展開し、2026 年 1 月には DESI v3.6 に統合された。HGEFS は AI 単体・物理単体の双方を上回る性能を示しており、「物理 × AI ハイブリッド」という運用モデルを世界で初めて実用化した点で注目される。これらは Project EAGLE（NOAA NWS・OAR・NCEP・EPIC の多機関連携）の成果であり、AWS Public Data 経由でデータを公開する民間エコシステムとも連動する。\n\n**Google DeepMind** は GraphCast（2023 年）→ GenCast（2024 年、Nature 掲載）→ WeatherNext 2（2025 年）と世代交代を続け、Apache-2.0 ライセンスで公開しつつ研究先行・機関連携という役割分担を維持する。\n\n### 2. WMO の国際調整と 2025 年 AI 声明\n\n2025 年 10 月の WMO 臨時世界気象会議で採択された AI 声明は、①オープンデータ・FAIR 原則の重視、②国家気象水文機関（NMHS）を公式警報の権威的発信源として維持、③倫理枠組みと知的財産ルールの整備、を三本柱とする（声明の政策的含意の詳細は政策・倫理・ガバナンス観点を参照）。WMO は 2026 年時点でも ITU 主導の「自然災害 AI 強靭化グローバルイニシアティブ」の創設メンバーとして標準化・ガバナンス議論を継続している。\n\n### 3. 機関戦略の比較と日本の位置づけ\n\n各機関の戦略を整理すると、ECMWF は「欧州協調型・OSS 公開」、NOAA は「物理 × AI ハイブリッド・AWS エコシステム活用」、Google DeepMind は「研究公開・Apache-2.0」という差別化が明確である。特に NOAA の HGEFS は、AI モデルと物理モデルを対等なメンバーとして統合する「グランドアンサンブル」戦略であり、ECMWF の AIFS-ENS とは異なるアーキテクチャ哲学を示している。\n\n日本気象庁は台風予報・線状降水帯検出での AI 活用を進めるが（社会実装の詳細は防災・社会実装観点を参照）、グローバルモデル開発では欧米三極に対して技術リーダーシップの差が顕著であり、ECMWF・NOAA の成果を参照・活用する立場が現状である。NASA・JAXA の衛星観測 × AI 融合については公開情報では詳細を確認できず、今後の動向注視が必要である。\n\n## 防災・社会実装観点 (補完)\n\n### WMO「AI声明」と Early Warnings for All の接続\n\nWMO は 2025 年 10 月の AI 声明で、AI 予報を世界の警報インフラの一部として正式に位置づけた。これは「Early Warnings for All (EW4All)」第 2 柱「検知・観測・監視・分析・予報」に AI が組み込まれることを意味する。2025 年中頃時点で 130 か国が WMO 支援を受け、総額 1.5 億ドル超のプロジェクトが進行中だ。WMO 事務局長は「1 ドルの投資が最大 15 ドルの災害損失削減をもたらす」と強調し、AI による早期警報の拡充を加速させる方針を示している。ただし、警報の「最後の 1 マイル」(住民への伝達・避難行動) は各国の制度・インフラ整備に依存しており、技術的精度向上だけでは社会実装は完結しない。データ・観測インフラ観点が指摘するように、グローバルサウスでは観測データの空白が予報精度の地域格差を生む構造的問題があり、EW4All の恩恵が届きにくい地域ほど警報インフラの整備も遅れるという二重の課題が存在する。\n\n### 物理 NWP と AI 予報の並列稼働と台風予報への波及\n\nECMWF AIFS や NOAA GraphCastGFS が実運用に入った 2024〜2025 年以降、物理 NWP と AI 予報の並列稼働が標準化しつつある (技術詳細は AI/ML 技術観点、機関別の動向は国際比較・機関別比較観点を参照)。台風予報では、ウェザーニューズが 2025 年シーズンから AI 予測モデルを本格導入し、気象庁・米軍 JTWC との 3 者比較で最高精度を達成したと 2026 年 4 月に公表した。一方、降水量予測では物理モデルが依然優位であり、「AI は進路、物理モデルは降水量」という役割分担が現場で意識され始めている。NHK 等メディアでの AI 台風予報の露出増加は住民の防災リテラシー向上にも寄与している。\n\n### 線状降水帯と日本の社会実装課題\n\n線状降水帯は局所性・突発性が高く、AI 早期検知の社会的需要が最も大きい現象の一つだ。ウェザーニューズは独自 AI 検知システムで 2025 年 8 月の捕捉率 100% を達成し、気象庁公式発表より早い通知を 3,800 超の企業・団体に提供している。気象庁も「半日程度前からの呼びかけ」を制度化しているが、空振りリスクは残る。自治体・住民への警報配信では、AI 予報の信頼性評価基準や誤予測時の責任帰属が未整備のまま実装が先行している状況は政策・倫理・ガバナンス観点が詳述する通りであり、防災現場では「誰の予報を信じるか」という住民・自治体の判断負荷が増大している点が固有の課題である。\n\n## データ・観測インフラ観点：気象 AI を支えるオープンデータ基盤の現状と課題\n\n### ERA5 ― 気象 AI の事実上の学習データ標準\n\nECMWF の全球再解析 **ERA5** は、GraphCast (2023年) 以降に登場したほぼすべての主要 AI 気象モデル (AIFS・GenCast・FourCastNet 等) の学習基盤であり、気象 AI における「事実上の標準データ」となっている。1940 年から現在まで 137 気圧面・約 31 km 解像度で大気状態を再現し、ラジオゾンデ・衛星・航空機観測をデータ同化で統合した高品質データセットである。\n\n2025 年 10 月には ECMWF が **Anemoi training-ready ERA5** を公開した。1979〜2023 年を対象に ML 学習に最適化された **Zarr 形式**のサブセットで、CC-BY-4.0 ライセンスのもと ECMWF インフラ上で誰でも利用可能となった。従来の GRIB2/NetCDF 形式から Zarr へのシフトはクラウドネイティブな分散学習との親和性が高く、グローバルサウスの研究機関がローカル環境を整備せずに学習データへアクセスできる経路として注目される。なお ERA5 の AWS Public Data 経由の提供は NSF NCAR へのリホストへ移行中であり、利用者はアクセス経路の変化に注意が必要だ。\n\n### ECMWF オープンデータ戦略の加速 (2025–2026 年)\n\nECMWF は 2025 年 10 月にリアルタイムカタログ全体を **CC-BY-4.0** ライセンスでオープン化した。2018 年以来の段階的オープン化計画の最終段階であり、FAIR 原則 (Findable / Accessible / Interoperable / Reusable) の実践として位置づけられる。ただし「オープン」は「完全無償」と同義ではない点に注意が必要だ。無償で即時利用できる範囲は 25 km 解像度のサブセットに限られ、高ボリュームデータの配信には別途サービス料が発生しうる。\n\n公開対象は AIFS・IFS・S2S・TIGGE・ERA5・季節予報を含み、`ecmwf-opendata` Python クライアントで統一的にアクセス可能。データは AWS・Azure・GCP にも複製配信される。評価基盤としては **WeatherBench2** が AI モデル間の公正な比較を担い、ECMWF は 2026 年「AI Weather Quest」コンペでサブシーズナル予測領域の ML 有効性を体系的に検証している。\n\nWMO の 2025 年 10 月 AI 声明が FAIR 原則とオープンデータを三本柱の一つとして掲げた背景には、ECMWF のこうした段階的オープン化の実績がある（政策的含意の詳細は政策・倫理・ガバナンス観点を参照）。\n\n### 残課題：観測データの非対称性とグローバルサウス\n\nERA5 の品質は先進国の高密度観測網に依存しており、アフリカ・南アジア等の観測空白域では再解析精度が低下する。ひまわり (JAXA/JMA)・GOES・Meteosat 等の静止衛星データの AI 学習への直接統合は進みつつあるが、地上観測 (アメダス等) の国際共有は依然として制限的である。\n\nグローバルサウスの機関が ERA5 を学習データとして利用する際、自国の観測データが十分に反映されていない可能性があり、予測精度の地域格差として顕在化しうる。Anemoi training-ready ERA5 の Zarr 公開はアクセス障壁を下げる一歩だが、観測データ自体の非対称性は解消されない。この構造的問題は、国際比較・機関別比較観点が指摘する「三極構造」の外側に置かれた国々への恩恵格差と直結しており、政策・倫理・ガバナンス観点が論じる公平性議論の技術的根拠でもある。防災・社会実装観点が示す Early Warnings for All の実効性も、最終的にはこの観測インフラ格差の克服にかかっている。\n\n---\n\n## 視点間の横断的観察\n\n【一致点】全4視点が「観測データの非対称性がグローバルサウスへの恩恵格差を生む」という構造的問題を独立に指摘している。データ・観測インフラ観点はERA5の先進国偏在を技術的根拠として示し、政策・倫理・ガバナンス観点は公平性の規範問題として論じ、防災・社会実装観点はEW4Allの実効性への制約として位置づけ、国際比較・機関別比較観点は三極構造の外側に置かれた国々の問題として整理する。4視点が同一の構造的欠陥を異なる角度から照射しており、これが本調査の最重要論点である。\n\n【相補点】データ・観測インフラ観点が示すECMWFのCC-BY-4.0オープン化の技術的実態は、政策・倫理・ガバナンス観点が論じるWMO FAIR原則の制度的裏付けとして機能する。また、国際比較・機関別比較観点が描くNOAAのHGEFS「物理×AIハイブリッド」戦略は、防災・社会実装観点が現場で観察する「AI は進路、物理モデルは降水量」という役割分担の機関レベルの根拠を与える。\n\n【緊張点】政策・倫理・ガバナンス観点はGoogle WeatherNextの「Restricted Countryリスト」の透明性不足を問題視するが、国際比較・機関別比較観点はApache-2.0公開という開放姿勢を評価しており、同一企業の行動に対する評価が分かれる。また、防災・社会実装観点は日本の民間AI活用の先行事例を肯定的に紹介する一方、政策・倫理・ガバナンス観点は責任帰属の未整備を批判的に指摘しており、実装速度と制度整備の間の緊張が浮かび上がる。\n\n## 結論\n\nWMO AI声明は技術的転換を制度的に追認した歴史的節点だが、4視点を統合すると「開放と格差の同時進行」という核心的矛盾が浮かぶ。ECMWF・NOAA・Google DeepMindの三極がオープン化を加速する一方、ERA5の観測偏在・輸出規制・責任帰属の空白がグローバルサウスと日本双方に制度的リスクを残す。日本は気象業務法の制度的障壁を解消しつつ、WMOガバナンスを通じた観測データ共有の国際枠組み構築に能動的に関与することが急務である。\n\n---\n\n## 出典\n\n- [WMO AI Conference Statement, Abu Dhabi 2025](https://wmo.int) (引用: `policy_ethics`)\n- [WeatherNext 2 — Google DeepMind](https://deepmind.google/science/weathernext) (引用: `policy_ethics`)\n- [ECMWF Open Data](https://www.ecmwf.int/en/forecasts/datasets/open-data) (引用: `policy_ethics`)\n- [NOAA deploys new generation of AI-driven global weather models](https://www.noaa.gov/news-release/noaa-deploys-new-generation-of-ai-driven-global-weather-models) (引用: `comparative_intl`)\n- [EAGLE AI Change Log – Earth Prediction Innovation Center](https://epic.noaa.gov/ai/eagle-change-log/) (引用: `comparative_intl`)\n- [New AI weather forecast models added to DESI – NOAA GSL](https://gsl.noaa.gov/news/new-ai-weather-forecast-models-added-to-desi/) (引用: `comparative_intl`)\n- [WMO Early Warnings for All Initiative](https://wmo.int/activities/early-warnings-for-all) (引用: `disaster_society`)\n- [WMO Statement on Artificial Intelligence in Weather, Climate and Water (Cg-Ext 2025)](https://wmo.int/media/news/wmo-statement-artificial-intelligence-weather-climate-and-water) (引用: `disaster_society`)\n- [ウェザーニューズ 台風予報 AI モデル精度評価 (2026年4月公表)](https://weathernews.jp/) (引用: `disaster_society`)\n- [ECMWF makes its entire Real-time Catalogue open to all](https://www.ecmwf.int/en/about/media-centre/news/2025/ecmwf-makes-its-entire-real-time-catalogue-open-all) (引用: `data_infra`)\n- [Open Data Roadmap - ECMWF](https://www.ecmwf.int/node/29013) (引用: `data_infra`)\n- [Introducing the Anemoi training-ready version of ERA5 | ECMWF](https://www.ecmwf.int/en/about/media-centre/aifs-blog/2025/introducing-anemoi-training-ready-version-era5) (引用: `data_infra`)\n"
+    }
+  ]
+}
